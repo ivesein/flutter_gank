@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../model/gank_info.dart';
 import '../widget/icon_and_text.dart';
+import '../widget/placeholder_image_view.dart';
+import '../util/date_util.dart';
 
 class GankListItem extends StatelessWidget {
   final GankInfo _gankInfo;
@@ -23,8 +25,9 @@ class GankListItem extends StatelessWidget {
             Icons.face,
             _gankInfo.who,
           ),
-          new SizedBox(width: 8.0),
-          new IconAndText(Icons.timer, '2天前')
+          new SizedBox(width: _defaultSpacing),
+          new IconAndText(
+              Icons.timer, DateUtil.getTimeDuration(_gankInfo.createdAt))
         ],
       );
 
@@ -33,13 +36,8 @@ class GankListItem extends StatelessWidget {
       ? new Container()
       : new ClipRRect(
           borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-          child: new Image.network(
-            _gankInfo.images[0],
-            width: 100.0,
-            height: 100.0,
-            fit: BoxFit.contain,
-          ),
-        );
+          child: new PlaceholderImageView(_gankInfo.images[0],
+              width: 100.0, height: 100.0));
 
   @override
   Widget build(BuildContext context) {
