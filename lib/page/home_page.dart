@@ -5,6 +5,7 @@ import '../page/sort_page.dart';
 import '../page/meizi_page.dart';
 import '../page/collections_page.dart';
 import '../util/data_util.dart';
+import '../widget/history_date_view.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,17 +16,22 @@ class _HoPageState extends State<HomePage> {
   int _tabIndex = 0;
   PageController _pageController;
 
+  double _appBarElevation = .0;
+  double _historyOpacity = .0;
+  String _currentDate;
   List<String> _historyDates = [];
-  String _lastDate;
-
   BottomNavigationBarItem _buildTab(BottomTab tab) =>
       new BottomNavigationBarItem(title: tab.title, icon: tab.icon);
 
   @override
   void initState() {
     super.initState();
-    _pageController = new PageController();
+    _initController();
     _loadData();
+  }
+
+  void _initController() {
+    _pageController = new PageController();
   }
 
   @override
@@ -38,7 +44,7 @@ class _HoPageState extends State<HomePage> {
     await DataUtil.getDateList().then((resultList) {
       setState(() {
         _historyDates = resultList;
-        _lastDate = _historyDates[0];
+        _currentDate = _historyDates[0];
       });
     });
   }
@@ -51,11 +57,31 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
+  /// 日期选择事件
+  void _dateRangeTap() {
+    setState(() {
+      if (_historyOpacity == .0) {
+        // 取消AppBar底部阴影
+        _appBarElevation = .0;
+        // 显示日期选择栏
+        _historyOpacity = 1.0;
+      } else {
+        _appBarElevation = 4.0;
+        _historyOpacity = .0;
+      }
+    });
+  }
+
+  /// 更多日期
+  void _moreHistoryTap() {}
+
+  void _doSearch() {}
+
   Widget _buildLeading() {
     IconButton _iconButton;
     if (_tabIndex == TabCategory.news.index) {
-      _iconButton =
-          new IconButton(icon: const Icon(Icons.date_range), onPressed: () {});
+      _iconButton = new IconButton(
+          icon: const Icon(Icons.date_range), onPressed: _dateRangeTap);
     } else if (_tabIndex == TabCategory.sort.index) {
       _iconButton =
           new IconButton(icon: const Icon(Icons.add), onPressed: () {});
@@ -69,30 +95,48 @@ class _HoPageState extends State<HomePage> {
     return _iconButton;
   }
 
-  void _doSearch() {}
-
   @override
   Widget build(BuildContext context) {
-    final AppBar _appBar = new AppBar(
+    // 标题栏
+    final Widget _appBar = new AppBar(
         title: _tabIndex == TabCategory.news.index
-            ? new Text(_lastDate ?? '')
+            ? new Text(_currentDate ?? '')
             : null,
         leading: _buildLeading(),
         actions: <Widget>[
           new IconButton(icon: const Icon(Icons.search), onPressed: _doSearch)
-        ]);
+        ],
+        elevation: _appBarElevation);
 
-    final _body = new PageView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _pageController,
-        children: <Widget>[
-          new NewsPage(),
-          new SortPage(),
-          new MeiZiPage(),
-          new CollectionsPage()
-        ]);
+    // 历史日期选择栏
+    final Widget _historyView = new AnimatedOpacity(
+        duration: const Duration(milliseconds: 100),
+        opacity: _historyOpacity,
+        child: new HistoryDateView(
+            currentDate: _currentDate,
+            historyDates: _historyDates,
+            onTap: (date) {
+              setState(() {
+                _currentDate = date;
+              });
+            }));
 
-    final _bottomTabBar = new BottomNavigationBar(
+    // 内容
+    final Widget _body = new Stack(children: <Widget>[
+      new PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _pageController,
+          children: <Widget>[
+            new NewsPage(),
+            new SortPage(),
+            new MeiZiPage(),
+            new CollectionsPage()
+          ]),
+      _historyView
+    ]);
+
+    // Tab栏
+    final Widget _bottomTabBar = new BottomNavigationBar(
         items: bottomTabs.map(_buildTab).toList(),
         type: BottomNavigationBarType.fixed,
         currentIndex: _tabIndex,

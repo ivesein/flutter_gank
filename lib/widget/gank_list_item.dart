@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../model/gank_info.dart';
 import '../widget/icon_and_text.dart';
 import '../widget/placeholder_image_view.dart';
-import '../util/date_util.dart';
+import '../util/time_util.dart';
 
 class GankListItem extends StatelessWidget {
   final GankInfo _gankInfo;
@@ -27,7 +27,7 @@ class GankListItem extends StatelessWidget {
           ),
           new SizedBox(width: _defaultSpacing),
           new IconAndText(
-              Icons.timer, DateUtil.getTimeDuration(_gankInfo.createdAt))
+              Icons.timer, getTimeDuration(_gankInfo.createdAt))
         ],
       );
 
