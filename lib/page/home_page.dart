@@ -110,7 +110,7 @@ class _HoPageState extends State<HomePage> {
 
     // 历史日期选择栏
     final Widget _historyView = new AnimatedOpacity(
-        duration: const Duration(milliseconds: 100),
+        duration: const Duration(milliseconds: 150),
         opacity: _historyOpacity,
         child: new HistoryDateView(
             currentDate: _currentDate,
