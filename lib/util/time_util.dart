@@ -55,3 +55,8 @@ String getMonth(String date) {
   ];
   return '${months[dateTime.month - 1]}';
 }
+
+String formatDateStr(String date) {
+  DateTime dateTime = DateTime.parse(date);
+  return '${dateTime.year}-${dateTime.month}-${dateTime.day}';
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widget/history_list_item.dart';
+import '../page/history_page.dart';
 
 class HistoryDateView extends StatelessWidget {
   // 日期列表
@@ -21,7 +22,10 @@ class HistoryDateView extends StatelessWidget {
       ? new IconButton(
           color: Colors.grey[800],
           icon: const Icon(Icons.more_horiz),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => new HistoryPage()));
+          },
         )
       : new HistoryListItem(this.historyDates[index], this.currentDate,
           onTap: (date) {
