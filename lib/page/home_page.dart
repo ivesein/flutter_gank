@@ -72,33 +72,30 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
-  /// 更多日期
-  void _moreHistoryTap() {}
-
   void _doSearch() {}
 
   Widget _buildLeading() {
-    IconButton _iconButton;
+    IconButton iconButton;
     if (_tabIndex == TabCategory.news.index) {
-      _iconButton = new IconButton(
+      iconButton = new IconButton(
           icon: const Icon(Icons.date_range), onPressed: _dateRangeTap);
     } else if (_tabIndex == TabCategory.sort.index) {
-      _iconButton =
+      iconButton =
           new IconButton(icon: const Icon(Icons.add), onPressed: () {});
     } else if (_tabIndex == TabCategory.meizi.index) {
-      _iconButton =
+      iconButton =
           new IconButton(icon: const Icon(Icons.sort), onPressed: () {});
     } else {
-      _iconButton =
+      iconButton =
           new IconButton(icon: const Icon(Icons.settings), onPressed: () {});
     }
-    return _iconButton;
+    return iconButton;
   }
 
   @override
   Widget build(BuildContext context) {
     // 标题栏
-    final Widget _appBar = new AppBar(
+    final Widget appBar = new AppBar(
         title: _tabIndex == TabCategory.news.index
             ? new Text(_currentDate ?? '')
             : null,
@@ -109,8 +106,8 @@ class _HoPageState extends State<HomePage> {
         elevation: _appBarElevation);
 
     // 历史日期选择栏
-    final Widget _historyView = new AnimatedOpacity(
-        duration: const Duration(milliseconds: 150),
+    final Widget historyView = new AnimatedOpacity(
+        duration: const Duration(milliseconds: 100),
         opacity: _historyOpacity,
         child: new HistoryDateView(
             currentDate: _currentDate,
@@ -122,7 +119,7 @@ class _HoPageState extends State<HomePage> {
             }));
 
     // 内容
-    final Widget _body = new Stack(children: <Widget>[
+    final Widget body = new Stack(children: <Widget>[
       new PageView(
           physics: const NeverScrollableScrollPhysics(),
           controller: _pageController,
@@ -132,17 +129,17 @@ class _HoPageState extends State<HomePage> {
             new MeiZiPage(),
             new CollectionsPage()
           ]),
-      _historyView
+      historyView
     ]);
 
     // Tab栏
-    final Widget _bottomTabBar = new BottomNavigationBar(
+    final Widget bottomTabBar = new BottomNavigationBar(
         items: bottomTabs.map(_buildTab).toList(),
         type: BottomNavigationBarType.fixed,
         currentIndex: _tabIndex,
         onTap: _selectedTab);
 
     return new Scaffold(
-        appBar: _appBar, body: _body, bottomNavigationBar: _bottomTabBar);
+        appBar: appBar, body: body, bottomNavigationBar: bottomTabBar);
   }
 }

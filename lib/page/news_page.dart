@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../model/today_indfo.dart';
 import '../model/gank_info.dart';
 import '../util/data_util.dart';
 import '../widget/gank_title_item.dart';
@@ -6,6 +7,8 @@ import '../widget/gank_list_item.dart';
 import '../widget/gank_pic_item.dart';
 
 class NewsPage extends StatefulWidget {
+  final String date;
+  NewsPage({this.date = ''});
   @override
   State<StatefulWidget> createState() => _NewsPageState();
 }
@@ -27,18 +30,26 @@ class _NewsPageState extends State<NewsPage>
   }
 
   Future<void> _loadData() async {
-    await DataUtil.getLastDayData().then((todayInfo) {
-      setState(() {
-        _girlImage = todayInfo.girlImage;
-        _itemData = todayInfo.itemData;
-      });
-    });
+    if (widget.date.isEmpty) {
+      await DataUtil.getLastDayData()
+          .then((todayInfo) => _setTodayInfo(todayInfo));
+    } else {
+      await DataUtil.getSpecialDayData(widget.date)
+          .then((todayInfo) => _setTodayInfo(todayInfo));
+    }
   }
 
   Future<void> _onRefresh() async {
     _itemData.clear();
     await _loadData();
     return null;
+  }
+
+  void _setTodayInfo(TodayInfo todayInfo) {
+    setState(() {
+      _girlImage = todayInfo.girlImage;
+      _itemData = todayInfo.itemData;
+    });
   }
 
   List<Widget> _buildItem() {
