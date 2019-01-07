@@ -6,6 +6,8 @@ import '../page/meizi_page.dart';
 import '../page/collections_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
+import '../event/bus_manager.dart';
+import '../event/update_news_date_event.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,10 +18,11 @@ class _HoPageState extends State<HomePage> {
   int _tabIndex = 0;
   PageController _pageController;
 
-  double _appBarElevation = .0;
+  double _appBarElevation = 4.0;
   double _historyOpacity = .0;
   String _currentDate;
   List<String> _historyDates = [];
+
   BottomNavigationBarItem _buildTab(BottomTab tab) =>
       new BottomNavigationBarItem(title: tab.title, icon: tab.icon);
 
@@ -115,6 +118,7 @@ class _HoPageState extends State<HomePage> {
             onTap: (date) {
               setState(() {
                 _currentDate = date;
+                BusManager.bus.fire(new UpdateNewsDateEvent(_currentDate));
               });
             }));
 

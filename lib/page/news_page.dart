@@ -5,6 +5,8 @@ import '../util/data_util.dart';
 import '../widget/gank_title_item.dart';
 import '../widget/gank_list_item.dart';
 import '../widget/gank_pic_item.dart';
+import '../event/bus_manager.dart';
+import '../event/update_news_date_event.dart';
 
 class NewsPage extends StatefulWidget {
   final String date;
@@ -15,12 +17,15 @@ class NewsPage extends StatefulWidget {
 
 class _NewsPageState extends State<NewsPage>
     with AutomaticKeepAliveClientMixin {
+  String _currentDate = '';
   String _girlImage;
-  Map<String, List<GankInfo>> _itemData;
+  Map<String, List<GankInfo>> _itemData = new Map();
 
   @override
   void initState() {
     super.initState();
+    _currentDate = widget.date;
+    _registerBusEvent();
     _loadData();
   }
 
@@ -30,14 +35,23 @@ class _NewsPageState extends State<NewsPage>
   }
 
   Future<void> _loadData() async {
-    if (widget.date.isEmpty) {
+    if (_currentDate.isEmpty) {
       await DataUtil.getLastDayData()
           .then((todayInfo) => _setTodayInfo(todayInfo));
     } else {
-      await DataUtil.getSpecialDayData(widget.date)
+      await DataUtil.getSpecialDayData(_currentDate)
           .then((todayInfo) => _setTodayInfo(todayInfo));
     }
   }
+
+  void _registerBusEvent() => BusManager.bus
+          .on<UpdateNewsDateEvent>()
+          .listen((UpdateNewsDateEvent event) {
+        setState(() {
+          _currentDate = event.date;
+        });
+        _onRefresh();
+      });
 
   Future<void> _onRefresh() async {
     _itemData.clear();
@@ -66,7 +80,7 @@ class _NewsPageState extends State<NewsPage>
 
   @override
   Widget build(BuildContext context) {
-    return _itemData == null
+    return _itemData.isEmpty
         ? new Center(child: const CircularProgressIndicator())
         : new Container(
             color: Theme.of(context).backgroundColor,
