@@ -7,6 +7,7 @@ import '../widget/gank_list_item.dart';
 import '../widget/gank_pic_item.dart';
 import '../event/bus_manager.dart';
 import '../event/update_news_date_event.dart';
+import '../page/article_page.dart';
 
 class NewsPage extends StatefulWidget {
   final String date;
@@ -66,13 +67,17 @@ class _NewsPageState extends State<NewsPage>
     });
   }
 
+  void _itemTap(GankInfo gankInfo) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => new ArticlePage(gankInfo)));
+
   List<Widget> _buildItem() {
     List<Widget> _widgets = [];
     _widgets.add(new GankPicItem(_girlImage));
     _itemData.forEach((title, gankInfos) {
       _widgets.add(new GankTitleItem(title));
       gankInfos.forEach((gankInfo) {
-        _widgets.add(new GankListItem(gankInfo));
+        _widgets
+            .add(new GankListItem(gankInfo, onTap: () => _itemTap(gankInfo)));
       });
     });
     return _widgets;
