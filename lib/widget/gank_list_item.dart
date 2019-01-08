@@ -6,8 +6,8 @@ import '../util/time_util.dart';
 
 class GankListItem extends StatelessWidget {
   final GankInfo _gankInfo;
-
-  GankListItem(this._gankInfo);
+  final Function onTap;
+  GankListItem(this._gankInfo, {Key key, this.onTap}) : super(key: key);
 
   static const double _defaultSpacing = 8.0;
 
@@ -26,8 +26,7 @@ class GankListItem extends StatelessWidget {
             _gankInfo.who,
           ),
           new SizedBox(width: _defaultSpacing),
-          new IconAndText(
-              Icons.timer, getTimeDuration(_gankInfo.createdAt))
+          new IconAndText(Icons.timer, getTimeDuration(_gankInfo.createdAt))
         ],
       );
 
@@ -41,27 +40,30 @@ class GankListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Card(
-      margin: const EdgeInsets.only(
-          left: _defaultSpacing,
-          right: _defaultSpacing,
-          bottom: _defaultSpacing),
-      child: new Container(
-        padding: const EdgeInsets.all(_defaultSpacing),
-        child: new Row(children: <Widget>[
-          new Expanded(
-            child: new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildContent(),
-                  new SizedBox(height: _defaultSpacing),
-                  _buildBottom(context)
-                ]),
-          ),
-          new SizedBox(width: _defaultSpacing),
-          _buildPreView()
-        ]),
+    return new InkWell(
+      child: new Card(
+        margin: const EdgeInsets.only(
+            left: _defaultSpacing,
+            right: _defaultSpacing,
+            bottom: _defaultSpacing),
+        child: new Container(
+          padding: const EdgeInsets.all(_defaultSpacing),
+          child: new Row(children: <Widget>[
+            new Expanded(
+              child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildContent(),
+                    new SizedBox(height: _defaultSpacing),
+                    _buildBottom(context)
+                  ]),
+            ),
+            new SizedBox(width: _defaultSpacing),
+            _buildPreView()
+          ]),
+        ),
       ),
+      onTap: () => this.onTap(),
     );
   }
 }
