@@ -8,6 +8,7 @@ import '../widget/gank_pic_item.dart';
 import '../event/bus_manager.dart';
 import '../event/update_news_date_event.dart';
 import '../page/article_page.dart';
+import '../page/photo_gallery_page.dart';
 
 class NewsPage extends StatefulWidget {
   final String date;
@@ -70,29 +71,36 @@ class _NewsPageState extends State<NewsPage>
   void _itemTap(GankInfo gankInfo) => Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => new ArticlePage(gankInfo)));
 
+  void _itemPhotoTap(List<String> images) => Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => new PhotoGalleryPage(images)));
+
   List<Widget> _buildItem() {
     List<Widget> _widgets = [];
-    _widgets.add(new GankPicItem(_girlImage));
+
+    // 妹子图
+    _widgets.add(new GankPicItem(_girlImage,
+        onPhototap: () => _itemPhotoTap([_girlImage])));
     _itemData.forEach((title, gankInfos) {
+      // 分类标题
       _widgets.add(new GankTitleItem(title));
       gankInfos.forEach((gankInfo) {
-        _widgets
-            .add(new GankListItem(gankInfo, onTap: () => _itemTap(gankInfo)));
+        // 分类
+        _widgets.add(new GankListItem(gankInfo,
+            onTap: () => _itemTap(gankInfo),
+            onPhotoTap: () => _itemPhotoTap(gankInfo.images)));
       });
     });
     return _widgets;
   }
 
   @override
-  Widget build(BuildContext context) {
-    return _itemData.isEmpty
-        ? new Center(child: const CircularProgressIndicator())
-        : new Container(
-            color: Theme.of(context).backgroundColor,
-            child: new RefreshIndicator(
-                child: new ListView(children: _buildItem()),
-                onRefresh: _onRefresh));
-  }
+  Widget build(BuildContext context) => _itemData.isEmpty
+      ? new Center(child: const CircularProgressIndicator())
+      : new Container(
+          color: Theme.of(context).backgroundColor,
+          child: new RefreshIndicator(
+              child: new ListView(children: _buildItem()),
+              onRefresh: _onRefresh));
 
   @override
   bool get wantKeepAlive => true;
