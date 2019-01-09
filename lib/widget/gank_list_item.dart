@@ -40,30 +40,36 @@ class GankListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new InkWell(
-      child: new Card(
+    final borderRadius = const BorderRadius.all(Radius.circular(4.0));
+
+    return new Card(
         margin: const EdgeInsets.only(
             left: _defaultSpacing,
             right: _defaultSpacing,
             bottom: _defaultSpacing),
-        child: new Container(
-          padding: const EdgeInsets.all(_defaultSpacing),
-          child: new Row(children: <Widget>[
-            new Expanded(
-              child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildContent(),
-                    new SizedBox(height: _defaultSpacing),
-                    _buildBottom(context)
-                  ]),
-            ),
-            new SizedBox(width: _defaultSpacing),
-            _buildPreView()
-          ]),
-        ),
-      ),
-      onTap: () => this.onTap(),
-    );
+        child: new Material(
+          borderRadius: borderRadius,
+          child: new InkWell(
+              borderRadius: borderRadius,
+              child: new Container(
+                padding: const EdgeInsets.all(_defaultSpacing),
+                child: new Row(children: <Widget>[
+                  new Expanded(
+                    child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _buildContent(),
+                          new SizedBox(height: _defaultSpacing),
+                          _buildBottom(context)
+                        ]),
+                  ),
+                  new SizedBox(width: _defaultSpacing),
+                  _buildPreView()
+                ]),
+              ),
+              onTap: () {
+                this.onTap();
+              }),
+        ));
   }
 }
