@@ -39,7 +39,7 @@ class HistoryDateView extends StatelessWidget {
           height: 60.0,
           child: new ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: 8,
+            itemCount: historyDates.isEmpty ? historyDates.length : 8,
             itemBuilder: (context, index) {
               return _renderDateList(context, index);
             },

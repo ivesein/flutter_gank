@@ -119,7 +119,7 @@ class _HoPageState extends State<HomePage> {
               setState(() {
                 _currentDate = date;
 
-                /// 通知[最新页]刷新
+                /// 通知[NewsPage]刷新
                 BusManager.bus.fire(new UpdateNewsDateEvent(_currentDate));
               });
             }));
