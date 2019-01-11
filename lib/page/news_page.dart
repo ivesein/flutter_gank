@@ -21,7 +21,7 @@ class _NewsPageState extends State<NewsPage>
     with AutomaticKeepAliveClientMixin {
   String _currentDate = '';
   String _girlImage;
-  Map<String, List<GankInfo>> _itemData = new Map();
+  List<GankInfo> _gankInfos = [];
 
   @override
   void initState() {
@@ -56,7 +56,7 @@ class _NewsPageState extends State<NewsPage>
       });
 
   Future<void> _onRefresh() async {
-    _itemData.clear();
+    _gankInfos.clear();
     await _loadData();
     return null;
   }
@@ -64,7 +64,7 @@ class _NewsPageState extends State<NewsPage>
   void _setTodayInfo(TodayInfo todayInfo) {
     setState(() {
       _girlImage = todayInfo.girlImage;
-      _itemData = todayInfo.itemData;
+      _gankInfos = todayInfo.gankInfos;
     });
   }
 
@@ -74,32 +74,30 @@ class _NewsPageState extends State<NewsPage>
   void _itemPhotoTap(List<String> images) => Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => new PhotoGalleryPage(images)));
 
-  List<Widget> _buildItem() {
-    List<Widget> _widgets = [];
-
-    // 妹子图
-    _widgets.add(new GankPicItem(_girlImage,
-        onPhototap: () => _itemPhotoTap([_girlImage])));
-    _itemData.forEach((title, gankInfos) {
-      // 分类标题
-      _widgets.add(new GankTitleItem(title));
-      gankInfos.forEach((gankInfo) {
-        // 分类
-        _widgets.add(new GankListItem(gankInfo,
-            onTap: () => _itemTap(gankInfo),
-            onPhotoTap: () => _itemPhotoTap(gankInfo.images)));
-      });
-    });
-    return _widgets;
+  Widget _renderList(int index) {
+    if (index == 0) {
+      return new GankPicItem(_girlImage,
+          onPhototap: () => _itemPhotoTap([_girlImage]));
+    } else {
+      GankInfo gankInfo = _gankInfos[index - 1];
+      return gankInfo.isTitle
+          ? new GankTitleItem(gankInfo.title)
+          : new GankListItem(gankInfo,
+              onTap: () => _itemTap(gankInfo),
+              onPhotoTap: () => _itemPhotoTap(gankInfo.images));
+    }
   }
 
   @override
-  Widget build(BuildContext context) => _itemData.isEmpty
+  Widget build(BuildContext context) => _gankInfos.isEmpty
       ? new Center(child: const CircularProgressIndicator())
       : new Container(
           color: Theme.of(context).backgroundColor,
           child: new RefreshIndicator(
-              child: new ListView(children: _buildItem()),
+              child: new ListView.builder(
+                itemCount: _gankInfos.length + 1,
+                itemBuilder: (context, index) => _renderList(index),
+              ),
               onRefresh: _onRefresh));
 
   @override

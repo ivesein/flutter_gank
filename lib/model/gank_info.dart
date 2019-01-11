@@ -9,6 +9,8 @@ class GankInfo {
   final String url;
   final bool used;
   final String who;
+  final bool isTitle;
+  final String title;
 
   GankInfo(
       {this.itemId,
@@ -20,7 +22,9 @@ class GankInfo {
       this.type,
       this.url,
       this.used,
-      this.who});
+      this.who,
+      this.isTitle = false,
+      this.title});
 
   factory GankInfo.fromJson(Map<String, dynamic> json) => new GankInfo(
       itemId: json['id'],

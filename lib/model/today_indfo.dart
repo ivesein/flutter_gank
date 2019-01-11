@@ -5,30 +5,31 @@ class TodayInfo {
   final bool error;
   final String girlImage;
   final List<String> category;
-  final Map<String, List<GankInfo>> itemData;
+  final List<GankInfo> gankInfos;
 
-  TodayInfo({this.error, this.girlImage, this.category, this.itemData});
+  TodayInfo({this.error, this.girlImage, this.category, this.gankInfos});
 
   factory TodayInfo.fromJson(Map<String, dynamic> json) {
-    Map<String, dynamic> _results = json['results'];
-    Map<String, List<GankInfo>> _itemData = {};
-    String _girlImage = '';
-    _results.forEach((key, value) {
+    Map<String, dynamic> results = json['results'];
+    List<GankInfo> gankInfos = [];
+    String girlImage = '';
+    results.forEach((key, value) {
       if (key == CATEGORY_WELFARE) {
-        _girlImage = value[0]['url'];
+        girlImage = value[0]['url'];
       } else {
-        _itemData[key] = (value as List<dynamic>)
+        gankInfos.add(new GankInfo(isTitle: true, title: key));
+        gankInfos.addAll((value as List<dynamic>)
             .map<GankInfo>((item) => GankInfo.fromJson(item))
-            .toList();
+            .toList());
       }
     });
-    List<String> _category = (json['category'] as List)
+    List<String> category = (json['category'] as List)
         ?.map((categoty) => categoty.toString())
         ?.toList();
     return TodayInfo(
         error: json['error'],
-        girlImage: _girlImage,
-        category: _category,
-        itemData: _itemData);
+        girlImage: girlImage,
+        category: category,
+        gankInfos: gankInfos);
   }
 }

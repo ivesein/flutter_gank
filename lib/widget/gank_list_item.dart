@@ -31,7 +31,7 @@ class GankListItem extends StatelessWidget {
       ]);
 
   ///构建缩略图
-  Widget _buildPreView() => _gankInfo.images == null
+  Widget _buildPreView() => _gankInfo.images == null || _gankInfo.images.isEmpty
       ? new Container()
       : new InkWell(
           child: new ClipRRect(
