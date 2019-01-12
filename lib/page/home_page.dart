@@ -57,6 +57,10 @@ class _HoPageState extends State<HomePage> {
       _tabIndex = index;
       _pageController.animateToPage(_tabIndex,
           duration: new Duration(milliseconds: 300), curve: Curves.ease);
+
+      if (_tabIndex != TabCategory.news.index) {
+        _historyOpacity = .0;
+      }
     });
   }
 
@@ -117,10 +121,12 @@ class _HoPageState extends State<HomePage> {
             historyDates: _historyDates,
             onTap: (date) {
               setState(() {
-                _currentDate = date;
+                if (_currentDate != date) {
+                  _currentDate = date;
 
-                /// 通知[NewsPage]刷新
-                BusManager.bus.fire(new UpdateNewsDateEvent(_currentDate));
+                  /// 通知[NewsPage]刷新
+                  BusManager.bus.fire(new UpdateNewsDateEvent(_currentDate));
+                }
               });
             }));
 

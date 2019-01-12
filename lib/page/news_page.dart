@@ -23,17 +23,39 @@ class _NewsPageState extends State<NewsPage>
   String _girlImage;
   List<GankInfo> _gankInfos = [];
 
+  ScrollController _scrollController;
+
   @override
   void initState() {
     super.initState();
     _currentDate = widget.date;
     _registerBusEvent();
+    _initController();
     _loadData();
   }
 
   @override
   void dispose() {
     super.dispose();
+    _scrollController.dispose();
+  }
+
+  void _registerBusEvent() => BusManager.bus
+          .on<UpdateNewsDateEvent>()
+          .listen((UpdateNewsDateEvent event) {
+        setState(() {
+          _currentDate = event.date;
+        });
+        _onRefresh();
+      });
+
+  void _initController() {
+    _scrollController = new ScrollController();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 500) {
+        print('处理');
+      }
+    });
   }
 
   Future<void> _loadData() async {
@@ -45,15 +67,6 @@ class _NewsPageState extends State<NewsPage>
           .then((todayInfo) => _setTodayInfo(todayInfo));
     }
   }
-
-  void _registerBusEvent() => BusManager.bus
-          .on<UpdateNewsDateEvent>()
-          .listen((UpdateNewsDateEvent event) {
-        setState(() {
-          _currentDate = event.date;
-        });
-        _onRefresh();
-      });
 
   Future<void> _onRefresh() async {
     _gankInfos.clear();
@@ -95,6 +108,7 @@ class _NewsPageState extends State<NewsPage>
           color: Theme.of(context).backgroundColor,
           child: new RefreshIndicator(
               child: new ListView.builder(
+                controller: _scrollController,
                 itemCount: _gankInfos.length + 1,
                 itemBuilder: (context, index) => _renderList(index),
               ),
