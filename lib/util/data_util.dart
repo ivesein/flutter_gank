@@ -2,6 +2,7 @@ import '../util/net_util.dart';
 import '../api/api.dart';
 import '../model/today_indfo.dart';
 import '../model/history_content_info.dart';
+import '../model/gank_info.dart';
 import 'dart:convert';
 
 class DataUtil {
@@ -47,5 +48,24 @@ class DataUtil {
     Map<String, dynamic> map = json.decode(response);
     TodayInfo info = TodayInfo.fromJson(map);
     return info;
+  }
+
+  /// 获取某个分类下的数据
+  /// [category] 分类名称
+  /// [page] 页号
+  /// [count] 每页数量
+  static Future<List<GankInfo>> getCategoryData(String category, int page,
+      {count = 20}) async {
+    String response = await Netutil.get('${Api.DATA}$category/$count/$page');
+    List<dynamic> dataList = json.decode(response)['results'];
+    List<GankInfo> resultList = [];
+    dataList.forEach((json) {
+      try {
+        resultList.add(GankInfo.fromJson(json));
+      } catch (e) {
+        print('GanInfo转换异常');
+      }
+    });
+    return resultList;
   }
 }
