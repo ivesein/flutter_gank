@@ -58,7 +58,8 @@ class _HoPageState extends State<HomePage> {
       _pageController.animateToPage(_tabIndex,
           duration: new Duration(milliseconds: 300), curve: Curves.ease);
 
-      if (_tabIndex != TabCategory.news.index) {
+      if (_tabIndex != TabCategory.news.index && _historyOpacity != .0) {
+        // 切换到其他分类,隐藏历史日期选择控件
         _historyOpacity = .0;
       }
     });
@@ -79,7 +80,17 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
-  void _doSearch() {}
+  /// 历史日期选择栏点击事件
+  void _historyDateItemTap(String date) {
+    setState(() {
+      if (_currentDate != date) {
+        _currentDate = date;
+
+        /// 通知[NewsPage]刷新
+        BusManager.bus.fire(new UpdateNewsDateEvent(_currentDate));
+      }
+    });
+  }
 
   Widget _buildLeading() {
     IconButton iconButton;
@@ -108,7 +119,7 @@ class _HoPageState extends State<HomePage> {
             : null,
         leading: _buildLeading(),
         actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.search), onPressed: _doSearch)
+          new IconButton(icon: const Icon(Icons.search), onPressed: () {})
         ],
         elevation: _appBarElevation);
 
@@ -119,16 +130,7 @@ class _HoPageState extends State<HomePage> {
         child: new HistoryDateView(
             currentDate: _currentDate,
             historyDates: _historyDates,
-            onTap: (date) {
-              setState(() {
-                if (_currentDate != date) {
-                  _currentDate = date;
-
-                  /// 通知[NewsPage]刷新
-                  BusManager.bus.fire(new UpdateNewsDateEvent(_currentDate));
-                }
-              });
-            }));
+            onTap: (date) => _historyDateItemTap(date)));
 
     // 内容
     final Widget body = new Stack(children: <Widget>[
