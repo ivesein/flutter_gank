@@ -10,4 +10,7 @@ class Api {
 
   /// 获取某个日期的干货
   static const String SPECIAL_DAY = 'https://gank.io/api/day/';
+
+  /// 获取分类数据
+  static const String DATA = "https://gank.io/api/data/";
 }
