@@ -7,7 +7,6 @@ import '../widget/gank_list_item.dart';
 import '../widget/gank_pic_item.dart';
 import '../event/bus_manager.dart';
 import '../event/update_news_date_event.dart';
-import '../page/article_page.dart';
 import '../page/photo_gallery_page.dart';
 
 class NewsPage extends StatefulWidget {
@@ -21,7 +20,7 @@ class _NewsPageState extends State<NewsPage>
     with AutomaticKeepAliveClientMixin {
   String _currentDate = '';
   String _girlImage;
-  List<GankInfo> _gankInfos = [];
+  Map<String, List<GankInfo>> _itemData = new Map();
 
   ScrollController _scrollController;
 
@@ -51,11 +50,6 @@ class _NewsPageState extends State<NewsPage>
 
   void _initController() {
     _scrollController = new ScrollController();
-    _scrollController.addListener(() {
-      if (_scrollController.offset > 500) {
-        print('处理');
-      }
-    });
   }
 
   Future<void> _loadData() async {
@@ -69,7 +63,7 @@ class _NewsPageState extends State<NewsPage>
   }
 
   Future<void> _onRefresh() async {
-    _gankInfos.clear();
+    _itemData.clear();
     await _loadData();
     return null;
   }
@@ -77,41 +71,39 @@ class _NewsPageState extends State<NewsPage>
   void _setTodayInfo(TodayInfo todayInfo) {
     setState(() {
       _girlImage = todayInfo.girlImage;
-      _gankInfos = todayInfo.gankInfos;
+      _itemData = todayInfo.itemData;
     });
   }
-
-  void _itemTap(GankInfo gankInfo) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => new ArticlePage(gankInfo)));
 
   void _itemPhotoTap(List<String> images) => Navigator.of(context).push(
       MaterialPageRoute(builder: (context) => new PhotoGalleryPage(images)));
 
-  Widget _renderList(int index) {
-    if (index == 0) {
-      return new GankPicItem(_girlImage,
-          onPhototap: () => _itemPhotoTap([_girlImage]));
-    } else {
-      GankInfo gankInfo = _gankInfos[index - 1];
-      return gankInfo.isTitle
-          ? new GankTitleItem(gankInfo.title)
-          : new GankListItem(gankInfo,
-              onTap: () => _itemTap(gankInfo),
-              onPhotoTap: () => _itemPhotoTap(gankInfo.images));
-    }
+  List<Widget> _buildItem() {
+    List<Widget> _widgets = [];
+
+    // 妹子图
+    _widgets.add(new GankPicItem(_girlImage,
+        onPhototap: () => _itemPhotoTap([_girlImage])));
+    _itemData.forEach((title, gankInfos) {
+      // 分类标题
+      _widgets.add(new GankTitleItem(title));
+
+      for (int i = 0; i < gankInfos.length; i++) {
+        // 分类
+        _widgets.add(new GankListItem(gankInfos[i],
+            currentIndex: i, dataCount: gankInfos.length));
+      }
+    });
+    return _widgets;
   }
 
   @override
-  Widget build(BuildContext context) => _gankInfos.isEmpty
+  Widget build(BuildContext context) => _itemData.isEmpty
       ? new Center(child: const CircularProgressIndicator())
       : new Container(
           color: Theme.of(context).backgroundColor,
           child: new RefreshIndicator(
-              child: new ListView.builder(
-                controller: _scrollController,
-                itemCount: _gankInfos.length + 1,
-                itemBuilder: (context, index) => _renderList(index),
-              ),
+              child: new ListView(children: _buildItem()),
               onRefresh: _onRefresh));
 
   @override

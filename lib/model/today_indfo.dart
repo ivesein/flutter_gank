@@ -5,31 +5,30 @@ class TodayInfo {
   final bool error;
   final String girlImage;
   final List<String> category;
-  final List<GankInfo> gankInfos;
+  final Map<String, List<GankInfo>> itemData;
 
-  TodayInfo({this.error, this.girlImage, this.category, this.gankInfos});
+  TodayInfo({this.error, this.girlImage, this.category, this.itemData});
 
   factory TodayInfo.fromJson(Map<String, dynamic> json) {
     Map<String, dynamic> results = json['results'];
-    List<GankInfo> gankInfos = [];
+    Map<String, List<GankInfo>> itemData = {};
     String girlImage = '';
     results.forEach((key, value) {
       if (key == CATEGORY_WELFARE) {
         girlImage = value[0]['url'];
       } else {
-        gankInfos.add(new GankInfo(isTitle: true, title: key));
-        gankInfos.addAll((value as List<dynamic>)
-            .map<GankInfo>((item) => GankInfo.fromJson(item))
-            .toList());
+        itemData[key] = (value as List<dynamic>)
+            ?.map((json) => GankInfo.fromJson(json))
+            ?.toList();
       }
     });
-    List<String> category = (json['category'] as List)
-        ?.map((categoty) => categoty.toString())
-        ?.toList();
+
+    List<String> category =
+        (json['category'] as List)?.map((name) => name.toString())?.toList();
     return TodayInfo(
         error: json['error'],
         girlImage: girlImage,
         category: category,
-        gankInfos: gankInfos);
+        itemData: itemData);
   }
 }
