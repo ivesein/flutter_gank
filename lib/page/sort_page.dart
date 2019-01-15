@@ -8,29 +8,55 @@ class SortPage extends StatefulWidget {
 }
 
 class _SortPageState extends State<SortPage>
-    with AutomaticKeepAliveClientMixin {
-  Tab _buildTab(CategoryInfo category) => new Tab(text: category.name);
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _initController();
+  }
+
+  void _initController() {
+    _tabController = TabController(vsync: this, length: categorys.length);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
+
+  Tab _buildTab(CategoryInfo category) =>
+      new Tab(text: category.name == 'all' ? '全部' : category.name);
 
   Widget _buildPage(CategoryInfo category) =>
       new CategoryItemPage(category.name);
+
   @override
   Widget build(BuildContext context) {
     final TabBar tabBar = new TabBar(
-      isScrollable: true,
-      unselectedLabelColor: Theme.of(context).primaryColor,
-      labelColor: Colors.black,
-      indicatorSize: TabBarIndicatorSize.label,
-      tabs: categorys.map(_buildTab).toList(),
-    );
+        controller: _tabController,
+        isScrollable: true,
+        unselectedLabelColor: Theme.of(context).primaryColor,
+        labelColor: Colors.grey[800],
+        indicatorSize: TabBarIndicatorSize.label,
+        tabs: categorys.map(_buildTab).toList());
 
-    final TabBarView body =
-        new TabBarView(children: categorys.map(_buildPage).toList());
+    final Widget body = new Expanded(
+        child: new Container(
+            decoration: new BoxDecoration(
+                border: Border(
+                    top:
+                        new BorderSide(color: Theme.of(context).dividerColor))),
+            child: new TabBarView(
+                controller: _tabController,
+                children: categorys.map(_buildPage).toList())));
 
     return new DefaultTabController(
       length: categorys.length,
-      child: new Scaffold(
-        appBar: tabBar,
-        body: body,
+      child: new Column(
+        children: <Widget>[tabBar, body],
       ),
     );
   }

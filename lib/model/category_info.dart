@@ -5,7 +5,7 @@ class CategoryInfo {
 }
 
 List<CategoryInfo> categorys = [
-  new CategoryInfo(name: '全部'),
+  new CategoryInfo(name: 'all'),
   new CategoryInfo(name: 'Android'),
   new CategoryInfo(name: 'iOS'),
   new CategoryInfo(name: 'App'),
