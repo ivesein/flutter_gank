@@ -10,9 +10,17 @@ class PhotoGalleryPage extends StatefulWidget {
 }
 
 class _PhotoGalleryPageState extends State<PhotoGalleryPage> {
-  Widget _buildItem(int index, List<String> images) => new PhotoView(
-      loadingChild: new Center(child: const CircularProgressIndicator()),
-      imageProvider: new NetworkImage(images[index]));
+  void _pop() {
+    Navigator.of(context).pop();
+  }
+
+  Widget _buildItem(int index, List<String> images) => new GestureDetector(
+        child: new PhotoView(
+            loadingChild: new Center(child: const CircularProgressIndicator()),
+            imageProvider: new NetworkImage(images[index]),
+            heroTag: images[index]),
+        onTap: _pop,
+      );
 
   @override
   Widget build(BuildContext context) {

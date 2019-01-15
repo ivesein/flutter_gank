@@ -8,11 +8,14 @@ class GankPicItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => new Container(
-      child: new Card(
-          margin: const EdgeInsets.all(8.0),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: new Material(
-              child: new InkWell(
-                  child: new PlaceholderImageView(this.url),
-                  onTap: () => this.onPhototap()))));
+          child: new Hero(
+        tag: url,
+        child: new Card(
+            margin: const EdgeInsets.all(8.0),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: new Material(
+                child: new InkWell(
+                    child: new PlaceholderImageView(this.url),
+                    onTap: () => this.onPhototap()))),
+      ));
 }
