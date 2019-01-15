@@ -61,6 +61,7 @@ class _HoPageState extends State<HomePage> {
       if (_tabIndex != TabCategory.news.index && _historyOpacity != .0) {
         // 切换到其他分类,隐藏历史日期选择控件
         _historyOpacity = .0;
+        _appBarElevation = 4.0;
       }
     });
   }
@@ -124,13 +125,11 @@ class _HoPageState extends State<HomePage> {
         elevation: _appBarElevation);
 
     // 历史日期选择栏
-    final Widget historyView = new AnimatedOpacity(
-        duration: const Duration(milliseconds: 100),
+    final Widget historyView = new HistoryDateView(
         opacity: _historyOpacity,
-        child: new HistoryDateView(
-            currentDate: _currentDate,
-            historyDates: _historyDates,
-            onTap: (date) => _historyDateItemTap(date)));
+        currentDate: _currentDate,
+        historyDates: _historyDates,
+        onTap: (date) => _historyDateItemTap(date));
 
     // 内容
     final Widget body = new Stack(children: <Widget>[
