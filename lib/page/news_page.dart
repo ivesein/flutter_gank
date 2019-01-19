@@ -5,7 +5,7 @@ import '../util/data_util.dart';
 import '../widget/gank_title_item.dart';
 import '../widget/gank_list_item.dart';
 import '../widget/gank_pic_item.dart';
-import '../event/bus_manager.dart';
+import '../manager/bus_manager.dart';
 import '../event/update_news_date_event.dart';
 import '../page/photo_gallery_page.dart';
 

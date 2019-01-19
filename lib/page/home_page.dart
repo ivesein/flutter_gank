@@ -6,8 +6,9 @@ import '../page/meizi_page.dart';
 import '../page/collections_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
-import '../event/bus_manager.dart';
+import '../manager/bus_manager.dart';
 import '../event/update_news_date_event.dart';
+import '../manager/favorite_manager.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,8 +30,14 @@ class _HoPageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _initApp();
     _initController();
     _loadData();
+  }
+
+  Future<void> _initApp() async {
+    // 收藏数据库
+    await FavoriteManager.init();
   }
 
   void _initController() {
