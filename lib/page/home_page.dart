@@ -65,10 +65,13 @@ class _HoPageState extends State<HomePage> {
       _pageController.animateToPage(_tabIndex,
           duration: new Duration(milliseconds: 300), curve: Curves.ease);
 
-      if (_tabIndex != TabCategory.news.index && _historyOpacity != .0) {
-        // 切换到其他分类,隐藏历史日期选择控件
-        _historyOpacity = .0;
+      // 切换到其他分类,隐藏历史日期选择控件
+      if (_historyOpacity != .0) _historyOpacity = .0;
+
+      if (_tabIndex != TabCategory.sort.index) {
         _appBarElevation = 4.0;
+      } else {
+        _appBarElevation = .0;
       }
     });
   }

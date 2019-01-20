@@ -35,30 +35,25 @@ class _SortPageState extends State<SortPage>
 
   @override
   Widget build(BuildContext context) {
-    final TabBar tabBar = new TabBar(
-        controller: _tabController,
-        isScrollable: true,
-        unselectedLabelColor: Theme.of(context).primaryColor,
-        labelColor: Colors.grey[800],
-        indicatorSize: TabBarIndicatorSize.label,
-        tabs: categorys.map(_buildTab).toList());
+    final Widget tabBar = new Material(
+        elevation: 4.0,
+        child: new TabBar(
+            controller: _tabController,
+            isScrollable: true,
+            unselectedLabelColor: Theme.of(context).primaryColor,
+            labelColor: Colors.grey[800],
+            indicatorSize: TabBarIndicatorSize.label,
+            tabs: categorys.map(_buildTab).toList()));
 
-    final Widget body = new Expanded(
-        child: new Container(
-            decoration: new BoxDecoration(
-                border: Border(
-                    top:
-                        new BorderSide(color: Theme.of(context).dividerColor))),
-            child: new TabBarView(
-                controller: _tabController,
-                children: categorys.map(_buildPage).toList())));
+    final Widget body = new Container(
+        margin: const EdgeInsets.only(top: kTextTabBarHeight),
+        child: new TabBarView(
+            controller: _tabController,
+            children: categorys.map(_buildPage).toList()));
 
     return new DefaultTabController(
-      length: categorys.length,
-      child: new Column(
-        children: <Widget>[tabBar, body],
-      ),
-    );
+        length: categorys.length,
+        child: new Stack(children: <Widget>[body, tabBar]));
   }
 
   @override
