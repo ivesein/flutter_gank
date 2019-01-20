@@ -35,7 +35,7 @@ class _HoPageState extends State<HomePage> {
     _loadData();
   }
 
-  Future<void> _initApp() async {
+  void _initApp() async {
     // 收藏数据库
     await FavoriteManager.init();
   }
@@ -71,7 +71,7 @@ class _HoPageState extends State<HomePage> {
       if (_tabIndex != TabCategory.sort.index) {
         _appBarElevation = 4.0;
       } else {
-        _appBarElevation = .0;
+        _appBarElevation = 4.0;
       }
     });
   }
