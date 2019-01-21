@@ -3,6 +3,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:async';
 import '../model/gank_info.dart';
 import '../manager/favorite_manager.dart';
+import '../manager/bus_manager.dart';
+import '../event/update_favorites_event.dart';
 
 class ArticlePage extends StatefulWidget {
   final GankInfo gankInfo;
@@ -14,8 +16,6 @@ class ArticlePage extends StatefulWidget {
 class _ArticlePageState extends State<ArticlePage> {
   bool _favoriteStatus = false;
   Completer<WebViewController> _webViewController;
-
-  SnackBar _snackBar = new SnackBar(content: const Text('哈哈哈'));
 
   @override
   void initState() {
@@ -38,7 +38,7 @@ class _ArticlePageState extends State<ArticlePage> {
   }
 
   /// 收藏点击
-  void _favoriteTap() async {
+  void _favoriteTap(BuildContext context) async {
     if (_favoriteStatus) {
       // 取消
       await FavoriteManager.delete(widget.gankInfo).then((result) {
@@ -50,13 +50,14 @@ class _ArticlePageState extends State<ArticlePage> {
       });
     } else {
       // 收藏
-      FavoriteManager.insert(widget.gankInfo).then((objectId) {
+      await FavoriteManager.insert(widget.gankInfo).then((objectId) {
         setState(() {
           _favoriteStatus = true;
         });
       });
     }
-    Scaffold.of(context).showSnackBar(_snackBar);
+
+    BusManager.bus.fire(new UpdateFavoritesEvent(widget.gankInfo));
   }
 
   @override
@@ -64,7 +65,7 @@ class _ArticlePageState extends State<ArticlePage> {
     final appBar = new AppBar(
         title: new Text(widget.gankInfo.desc), leading: const BackButton());
 
-    final Widget _body = new WebView(
+    final Widget body = new WebView(
         initialUrl: widget.gankInfo.url,
         javascriptMode: JavascriptMode.unrestricted,
         onWebViewCreated: (WebViewController webViewController) {
@@ -75,9 +76,9 @@ class _ArticlePageState extends State<ArticlePage> {
         child: new Icon(
             _favoriteStatus ? Icons.favorite : Icons.favorite_border,
             color: _favoriteStatus ? Colors.red : Colors.black),
-        onPressed: _favoriteTap);
+        onPressed: () => _favoriteTap(context));
 
     return new Scaffold(
-        appBar: appBar, body: _body, floatingActionButton: actionButton);
+        appBar: appBar, body: body, floatingActionButton: actionButton);
   }
 }
