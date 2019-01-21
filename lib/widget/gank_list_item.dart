@@ -9,8 +9,15 @@ class GankListItem extends StatelessWidget {
   final GankInfo gankInfo;
   final int currentIndex;
   final int dataCount;
+  // 是否支持测滑删除
+  final bool dismissible;
+  final Function(int, GankInfo) onDismissed;
   GankListItem(this.gankInfo,
-      {Key key, @required this.currentIndex, @required this.dataCount})
+      {Key key,
+      @required this.currentIndex,
+      @required this.dataCount,
+      this.dismissible = false,
+      this.onDismissed})
       : super(key: key);
 
   static const double _defaultSpacing = 8.0;
@@ -45,7 +52,7 @@ class GankListItem extends StatelessWidget {
                   height: 100.0),
             );
 
-  /// 构建内容布局
+  /// 构建内容
   Widget _buildContent(BuildContext context) {
     final borderRadius = const BorderRadius.all(Radius.circular(4.0));
     return new Material(
@@ -71,13 +78,8 @@ class GankListItem extends StatelessWidget {
             onTap: () => _onItemTap(context)));
   }
 
-  void _onItemTap(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => new ArticlePage(this.gankInfo)));
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  /// 构建布局
+  Widget _buildLayout(BuildContext context) {
     final double topSpacing = this.currentIndex == 0 ? _defaultSpacing : .0;
     final double bottomSpacing =
         this.currentIndex == this.dataCount ? .0 : _defaultSpacing;
@@ -88,5 +90,23 @@ class GankListItem extends StatelessWidget {
             top: topSpacing,
             bottom: bottomSpacing),
         child: _buildContent(context));
+  }
+
+  void _onItemTap(BuildContext context) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => new ArticlePage(this.gankInfo)));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return this.dismissible
+        ? new Dismissible(
+            key: new Key(this.gankInfo.itemId),
+            child: _buildLayout(context),
+            onDismissed: (decoration) {
+              this.onDismissed(this.currentIndex, this.gankInfo);
+            },
+          )
+        : _buildLayout(context);
   }
 }
