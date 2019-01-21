@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../model/category_info.dart';
 import '../page/category_item_page.dart';
 
-class SortPage extends StatefulWidget {
+class CategoryPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _SortPageState();
+  State<StatefulWidget> createState() => _CategoryPageState();
 }
 
-class _SortPageState extends State<SortPage>
+class _CategoryPageState extends State<CategoryPage>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
   TabController _tabController;
 
