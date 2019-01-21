@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import '../model/bottom_tab.dart';
 import '../page/news_page.dart';
-import '../page/sort_page.dart';
+import '../page/category_page.dart';
 import '../page/meizi_page.dart';
-import '../page/collections_page.dart';
+import '../page/favorites_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
@@ -148,9 +148,9 @@ class _HoPageState extends State<HomePage> {
           controller: _pageController,
           children: <Widget>[
             new NewsPage(),
-            new SortPage(),
+            new CategoryPage(),
             new MeiZiPage(),
-            new CollectionsPage()
+            new FavoritesPage()
           ]),
       historyView
     ]);
