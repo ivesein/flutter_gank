@@ -5,6 +5,7 @@ import '../util/data_util.dart';
 import '../widget/load_more_view.dart';
 import '../widget/gank_list_item.dart';
 import '../widget/empty_view.dart';
+import '../model/empty_view_status.dart';
 
 class GankItemPage extends StatefulWidget {
   final String categotyName;
@@ -21,8 +22,10 @@ class _GankItemPageState extends State<GankItemPage>
   bool _isLoadMore = false;
   bool _hasMore = false;
   List<GankInfo> _gankInfos = [];
-  StreamController<List<GankInfo>> _streamController;
   ScrollController _scrollController;
+
+  // 默认Loading
+  EmptyViewStatus _emptyViewStatus = EmptyViewStatus.loading;
 
   @override
   void initState() {
@@ -32,8 +35,6 @@ class _GankItemPageState extends State<GankItemPage>
   }
 
   void _initController() {
-    _streamController = new StreamController();
-
     _scrollController = new ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -53,9 +54,14 @@ class _GankItemPageState extends State<GankItemPage>
       // 获取分类数据
       resultList = await DataUtil.getCategoryData(widget.categotyName, _pageNo);
     }
-    _gankInfos.addAll(resultList);
-    _streamController.sink.add(_gankInfos);
-    _hasMore = resultList.length >= 20;
+    setState(() {
+      _gankInfos.addAll(resultList);
+      _hasMore = resultList.length >= 20;
+
+      _emptyViewStatus = _gankInfos.isEmpty && _pageNo == 1
+          ? EmptyViewStatus.noData
+          : EmptyViewStatus.hasData;
+    });
   }
 
   Future<void> _onRefresh() async {
@@ -73,7 +79,7 @@ class _GankItemPageState extends State<GankItemPage>
   @override
   void dispose() {
     super.dispose();
-    _streamController.close();
+    _scrollController.dispose();
   }
 
   Widget _renderList(int index) {
@@ -86,24 +92,18 @@ class _GankItemPageState extends State<GankItemPage>
 
   @override
   Widget build(BuildContext context) {
-    return new StreamBuilder<List<GankInfo>>(
-        stream: _streamController.stream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return new Center(child: const CircularProgressIndicator());
-          }
-          return new EmptyView(
-              child: new Container(
-                  color: Theme.of(context).backgroundColor,
-                  child: new RefreshIndicator(
-                      child: new ListView.builder(
-                        controller: _scrollController,
-                        itemCount: snapshot.data.length + 1,
-                        itemBuilder: (context, index) => _renderList(index),
-                      ),
-                      onRefresh: _onRefresh)),
-              hasData: _gankInfos.isNotEmpty);
-        });
+    return new EmptyView(
+      status: _emptyViewStatus,
+      child: new Container(
+          color: Theme.of(context).backgroundColor,
+          child: new RefreshIndicator(
+              child: new ListView.builder(
+                controller: _scrollController,
+                itemCount: _gankInfos.length + 1,
+                itemBuilder: (context, index) => _renderList(index),
+              ),
+              onRefresh: _onRefresh)),
+    );
   }
 
   @override

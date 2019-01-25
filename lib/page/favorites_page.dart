@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../manager/favorite_manager.dart';
 import '../model/gank_info.dart';
+import '../model/empty_view_status.dart';
 import '../widget/gank_list_item.dart';
 import '../widget/empty_view.dart';
 import '../manager/bus_manager.dart';
@@ -16,6 +17,9 @@ class FavoritesPage extends StatefulWidget {
 class _FavoritesPageState extends State<FavoritesPage>
     with AutomaticKeepAliveClientMixin {
   List<GankInfo> _gankInfos = [];
+
+  // 默认无数据
+  EmptyViewStatus _emptyViewStatus = EmptyViewStatus.noData;
 
   @override
   void initState() {
@@ -34,6 +38,7 @@ class _FavoritesPageState extends State<FavoritesPage>
         // 添加
         _gankInfos.add(gankInfo);
       }
+      _updateEmptyViewStatus();
     });
   }
 
@@ -42,8 +47,14 @@ class _FavoritesPageState extends State<FavoritesPage>
       setState(() {
         _gankInfos =
             datas.map<GankInfo>((data) => GankInfo.fromJson(data)).toList();
+        _updateEmptyViewStatus();
       });
     });
+  }
+
+  void _updateEmptyViewStatus() {
+    _emptyViewStatus =
+        _gankInfos.isEmpty ? EmptyViewStatus.noData : EmptyViewStatus.hasData;
   }
 
   void _onItemDismissed(int currentIndex, GankInfo currentGankInfo) async {
@@ -51,6 +62,7 @@ class _FavoritesPageState extends State<FavoritesPage>
     if (count > 0) {
       setState(() {
         _gankInfos.remove(currentGankInfo);
+        _updateEmptyViewStatus();
       });
 
       SnackBar snackBar = new SnackBar(
@@ -77,9 +89,9 @@ class _FavoritesPageState extends State<FavoritesPage>
   @override
   Widget build(BuildContext context) {
     return new EmptyView(
+        status: _emptyViewStatus,
         image: ImageValues.EMPTY_VIEW_NO_FAVORITE_IMAGE,
         remark: StringValus.EMPTY_NO_FAVORITE_DATA_REMARK,
-        hasData: _gankInfos.isNotEmpty,
         child: new Container(
             color: Theme.of(context).backgroundColor,
             child: new ListView.builder(
