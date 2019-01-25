@@ -78,3 +78,4 @@ flutter:
   assets:
     - images/ic_list_no_more.jpg
     - images/ic_empty_no_data.gif
+    - images/ic_empty_no_favorite_data.gif
