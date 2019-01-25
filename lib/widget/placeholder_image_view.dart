@@ -6,7 +6,9 @@ class PlaceholderImageView extends StatelessWidget {
   final String imageUrl;
   final double height;
   final double width;
-  PlaceholderImageView(this.imageUrl, {Key key, this.height, this.width})
+  final BoxFit fit;
+  PlaceholderImageView(this.imageUrl,
+      {Key key, this.height, this.width, this.fit = BoxFit.cover})
       : super(key: key);
 
   @override
@@ -20,6 +22,6 @@ class PlaceholderImageView extends StatelessWidget {
             placeholder: kTransparentImage,
             height: height,
             width: width,
-            fit: BoxFit.cover)
+            fit: fit)
       ]);
 }
