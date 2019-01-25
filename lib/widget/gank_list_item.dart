@@ -32,11 +32,11 @@ class GankListItem extends StatelessWidget {
   /// 构建底部布局
   Widget _buildBottom(BuildContext context) => Row(children: <Widget>[
         new IconAndText(
-          Icons.face,
+          Icons.person,
           this.gankInfo.who,
         ),
         new SizedBox(width: _defaultSpacing),
-        new IconAndText(Icons.timer, getTimeDuration(this.gankInfo.createdAt))
+        new IconAndText(Icons.update, getTimeDuration(this.gankInfo.publishedAt))
       ]);
 
   ///构建缩略图
