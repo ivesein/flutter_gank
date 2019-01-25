@@ -27,7 +27,7 @@ class GankInfo {
       this.title});
 
   factory GankInfo.fromJson(Map<String, dynamic> json) => new GankInfo(
-      itemId: json['itemId'] ?? json['_id'],
+      itemId: json['itemId'] ?? json['_id'] ?? json['ganhuo_id'],
       createdAt: json['createdAt'],
       desc: json['desc'],
       images:
