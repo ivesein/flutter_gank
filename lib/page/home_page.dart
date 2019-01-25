@@ -4,6 +4,7 @@ import '../page/news_page.dart';
 import '../page/category_page.dart';
 import '../page/meizi_page.dart';
 import '../page/favorites_page.dart';
+import '../page/search_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
@@ -68,11 +69,7 @@ class _HoPageState extends State<HomePage> {
       // 切换到其他分类,隐藏历史日期选择控件
       if (_historyOpacity != .0) _historyOpacity = .0;
 
-      if (_tabIndex != TabCategory.sort.index) {
-        _appBarElevation = 4.0;
-      } else {
-        _appBarElevation = 4.0;
-      }
+      _appBarElevation = _tabIndex != TabCategory.sort.index ? 4.0 : .0;
     });
   }
 
@@ -121,6 +118,10 @@ class _HoPageState extends State<HomePage> {
     return iconButton;
   }
 
+  void _doSearch(BuildContext context) async {
+    await showSearch(context: context, delegate: SearchPage());
+  }
+
   @override
   Widget build(BuildContext context) {
     // 标题栏
@@ -130,7 +131,9 @@ class _HoPageState extends State<HomePage> {
             : null,
         leading: _buildLeading(),
         actions: <Widget>[
-          new IconButton(icon: const Icon(Icons.search), onPressed: () {})
+          new IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => _doSearch(context))
         ],
         elevation: _appBarElevation);
 
