@@ -36,7 +36,8 @@ class GankListItem extends StatelessWidget {
           this.gankInfo.who,
         ),
         new SizedBox(width: _defaultSpacing),
-        new IconAndText(Icons.update, getTimeDuration(this.gankInfo.publishedAt))
+        new IconAndText(
+            Icons.update, getTimeDuration(this.gankInfo.publishedAt))
       ]);
 
   ///构建缩略图
@@ -105,8 +106,7 @@ class GankListItem extends StatelessWidget {
             child: _buildLayout(context),
             onDismissed: (decoration) {
               this.onDismissed(this.currentIndex, this.gankInfo);
-            },
-          )
+            })
         : _buildLayout(context);
   }
 }

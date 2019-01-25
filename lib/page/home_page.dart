@@ -10,6 +10,7 @@ import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
 import '../event/update_news_date_event.dart';
 import '../manager/favorite_manager.dart';
+import '../values/strings.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -126,9 +127,9 @@ class _HoPageState extends State<HomePage> {
   Widget build(BuildContext context) {
     // 标题栏
     final Widget appBar = new AppBar(
-        title: _tabIndex == TabCategory.news.index
-            ? new Text(_currentDate ?? '')
-            : null,
+        title: new Text(_tabIndex == TabCategory.news.index
+            ? _currentDate
+            : StringValus.APP_NAME),
         leading: _buildLeading(),
         actions: <Widget>[
           new IconButton(

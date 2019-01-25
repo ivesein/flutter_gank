@@ -42,9 +42,7 @@ class _NewsPageState extends State<NewsPage>
   void _registerBusEvent() => BusManager.bus
           .on<UpdateNewsDateEvent>()
           .listen((UpdateNewsDateEvent event) {
-        setState(() {
-          _currentDate = event.date;
-        });
+        setState(() => _currentDate = event.date);
         _onRefresh();
       });
 

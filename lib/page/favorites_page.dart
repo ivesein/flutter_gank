@@ -30,6 +30,15 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   void _registBusEvent() async {
     BusManager.bus.on<UpdateFavoritesEvent>().listen((updateFavoriteBusEvent) {
+      GankInfo gankInfo = updateFavoriteBusEvent.gankInfo;
+      // if (_gankInfos.contains(gankInfo)) {
+      //   // 删除
+      //   _gankInfos.remove(gankInfo);
+      // } else {
+      //   // 添加
+      //   _gankInfos.add(gankInfo);
+      // }
+      // _updateEmptyViewStatus();
       _loadData();
     });
   }
@@ -63,9 +72,8 @@ class _FavoritesPageState extends State<FavoritesPage>
               label: StringValus.RETRACT,
               onPressed: () async {
                 await FavoriteManager.insert(currentGankInfo).then((objectId) {
-                  setState(() {
-                    _gankInfos.insert(currentIndex, currentGankInfo);
-                  });
+                  setState(
+                      () => _gankInfos.insert(currentIndex, currentGankInfo));
                 });
               }));
       Scaffold.of(context).showSnackBar(snackBar);

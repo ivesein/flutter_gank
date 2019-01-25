@@ -31,9 +31,7 @@ class _ArticlePageState extends State<ArticlePage> {
   void _initData() async {
     Map<String, dynamic> query = {'itemId': widget.gankInfo.itemId};
     await FavoriteManager.find(query).then((resultList) {
-      setState(() {
-        _favoriteStatus = resultList.isEmpty ? false : true;
-      });
+      setState(() => _favoriteStatus = resultList.isEmpty ? false : true);
     });
   }
 
@@ -43,17 +41,13 @@ class _ArticlePageState extends State<ArticlePage> {
       // 取消
       await FavoriteManager.delete(widget.gankInfo).then((result) {
         if (result > 0) {
-          setState(() {
-            _favoriteStatus = false;
-          });
+          setState(() => _favoriteStatus = false);
         }
       });
     } else {
       // 收藏
       await FavoriteManager.insert(widget.gankInfo).then((objectId) {
-        setState(() {
-          _favoriteStatus = true;
-        });
+        setState(() => _favoriteStatus = true);
       });
     }
 

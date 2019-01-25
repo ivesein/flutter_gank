@@ -21,9 +21,7 @@ class _SearchSuggestionsState extends State<SearchSuggestionsPage> {
 
   void _initHistorys() async {
     await SearchHistoryManager.findAll().then((historys) {
-      setState(() {
-        this._historys = historys;
-      });
+      setState(() => this._historys = historys);
     });
   }
 
