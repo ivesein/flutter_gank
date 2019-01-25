@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../model/category_info.dart';
-import '../page/category_item_page.dart';
+import '../page/gank_item_page.dart';
 
 class CategoryPage extends StatefulWidget {
   @override
@@ -30,8 +30,7 @@ class _CategoryPageState extends State<CategoryPage>
   Tab _buildTab(CategoryInfo category) =>
       new Tab(text: category.name == 'all' ? '全部' : category.name);
 
-  Widget _buildPage(CategoryInfo category) =>
-      new CategoryItemPage(category.name);
+  Widget _buildPage(CategoryInfo category) => new GankItemPage(category.name);
 
   @override
   Widget build(BuildContext context) {
