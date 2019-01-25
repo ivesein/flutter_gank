@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import '../manager/favorite_manager.dart';
 import '../model/gank_info.dart';
 import '../widget/gank_list_item.dart';
+import '../widget/empty_view.dart';
 import '../manager/bus_manager.dart';
 import '../event/update_favorites_event.dart';
 import '../values/strings.dart';
+import '../values/images.dart';
 
 class FavoritesPage extends StatefulWidget {
   @override
@@ -74,12 +76,16 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
-        color: Theme.of(context).backgroundColor,
-        child: new ListView.builder(
-          itemCount: _gankInfos.length,
-          itemBuilder: (context, index) => _renderList(index),
-        ));
+    return new EmptyView(
+        image: ImageValues.EMPTY_VIEW_NO_FAVORITE_IMAGE,
+        remark: StringValus.EMPTY_NO_FAVORITE_DATA_REMARK,
+        hasData: _gankInfos.isNotEmpty,
+        child: new Container(
+            color: Theme.of(context).backgroundColor,
+            child: new ListView.builder(
+              itemCount: _gankInfos.length,
+              itemBuilder: (context, index) => _renderList(index),
+            )));
   }
 
   @override
