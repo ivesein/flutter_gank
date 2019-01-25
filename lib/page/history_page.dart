@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../util/data_util.dart';
 import '../model/history_content_info.dart';
+import '../model/empty_view_status.dart';
 import '../widget/load_more_view.dart';
+import '../widget/empty_view.dart';
 import '../widget/history_content_list_item.dart';
 import '../page/detail_page.dart';
 import 'dart:async';
@@ -17,8 +19,10 @@ class _HistoryPageState extends State<HistoryPage> {
   bool _isLoadMore = false;
   bool _hasMore = false;
   List<HistoryContentInfo> _historyList = [];
-  StreamController<List<HistoryContentInfo>> _streamController;
   ScrollController _scrollController;
+
+// 默认Loading
+  EmptyViewStatus _emptyViewStatus = EmptyViewStatus.loading;
 
   @override
   void initState() {
@@ -30,12 +34,10 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   void dispose() {
     super.dispose();
-    _streamController.close();
     _scrollController.dispose();
   }
 
   void _initController() {
-    _streamController = new StreamController();
     _scrollController = new ScrollController();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -53,9 +55,14 @@ class _HistoryPageState extends State<HistoryPage> {
     }
     await DataUtil.getHistoryContentData(_pageNum, count: _pageCount)
         .then((resultList) {
-      _historyList.addAll(resultList);
-      _streamController.sink.add(_historyList);
-      _hasMore = resultList.length >= _pageCount;
+      setState(() {
+        _historyList.addAll(resultList);
+        _hasMore = resultList.length >= _pageCount;
+
+        _emptyViewStatus = _historyList.isEmpty && _pageNum == 1
+            ? EmptyViewStatus.noData
+            : EmptyViewStatus.hasData;
+      });
     });
   }
 
@@ -75,12 +82,11 @@ class _HistoryPageState extends State<HistoryPage> {
   void _itemTap(BuildContext context, String date) => Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => new DetailPage(date)));
 
-  Widget _renderList(
-      BuildContext context, int index, List<HistoryContentInfo> dataList) {
-    if (index == dataList.length) {
+  Widget _renderList(BuildContext context, int index) {
+    if (index == _historyList.length) {
       return new LoadMoreView(_hasMore);
     }
-    return new HistoryContentListItem(dataList[index], onTap: _itemTap);
+    return new HistoryContentListItem(_historyList[index], onTap: _itemTap);
   }
 
   @override
@@ -90,25 +96,17 @@ class _HistoryPageState extends State<HistoryPage> {
       leading: const BackButton(),
     );
 
-    final Widget body = new StreamBuilder<List<HistoryContentInfo>>(
-      stream: _streamController.stream,
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return new Center(child: const CircularProgressIndicator());
-        }
-        return Container(
-          color: Theme.of(context).backgroundColor,
-          child: new RefreshIndicator(
-            child: new ListView.builder(
-                controller: _scrollController,
-                itemCount: snapshot.data.length + 1,
-                itemBuilder: (context, index) =>
-                    _renderList(context, index, snapshot.data)),
-            onRefresh: _onRefresh,
-          ),
-        );
-      },
-    );
+    final Widget body = new EmptyView(
+        status: _emptyViewStatus,
+        child: Container(
+            color: Theme.of(context).backgroundColor,
+            child: new RefreshIndicator(
+              child: new ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _historyList.length + 1,
+                  itemBuilder: (context, index) => _renderList(context, index)),
+              onRefresh: _onRefresh,
+            )));
 
     return new Scaffold(appBar: appBar, body: body);
   }

@@ -34,12 +34,15 @@ class EmptyView extends StatelessWidget {
   Widget build(BuildContext context) {
     switch (this.status) {
       case EmptyViewStatus.loading:
+        // Loading
         return _buildLoadingView();
         break;
       case EmptyViewStatus.hasData:
+        // Child
         return this.child;
         break;
       case EmptyViewStatus.noData:
+        // NoData
         return _buildNoDataView();
         break;
     }
