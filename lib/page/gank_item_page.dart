@@ -46,22 +46,20 @@ class _GankItemPageState extends State<GankItemPage>
 
   Future<void> _loadData() async {
     _isLoadMore ? _pageNo++ : _pageNo = 1;
-    List<GankInfo> resultList = [];
-    if (widget.query.isNotEmpty) {
-      // 搜索数据
-      resultList = await DataUtil.searchData(widget.query, _pageNo);
-    } else {
-      // 获取分类数据
-      resultList = await DataUtil.getCategoryData(widget.categotyName, _pageNo);
-    }
-    setState(() {
-      _gankInfos.addAll(resultList);
-      _hasMore = resultList.length >= 20;
+    List<GankInfo> resultList = widget.query.isNotEmpty
+        ? await DataUtil.searchData(widget.query, _pageNo)
+        : await DataUtil.getCategoryData(widget.categotyName, _pageNo);
 
-      _emptyViewStatus = _gankInfos.isEmpty && _pageNo == 1
-          ? EmptyViewStatus.noData
-          : EmptyViewStatus.hasData;
-    });
+    if (this.mounted) {
+      setState(() {
+        _gankInfos.addAll(resultList);
+        _hasMore = resultList.length >= 20;
+
+        _emptyViewStatus = _gankInfos.isEmpty && _pageNo == 1
+            ? EmptyViewStatus.noData
+            : EmptyViewStatus.hasData;
+      });
+    }
   }
 
   Future<void> _onRefresh() async {
