@@ -68,4 +68,25 @@ class DataUtil {
     });
     return resultList;
   }
+
+  /// 查询数据
+  /// [query] 查询内容
+  /// [page] 页号
+  /// [category] 分类,目前默认是搜索全部
+  /// [count] 每页数量
+  static Future<List<GankInfo>> searchData(String query, int page,
+      {category = 'all', count = 20}) async {
+    String response = await Netutil.get(
+        '${Api.SEARCH}query/$query/category/$category/count/$count/page/$page');
+    List<dynamic> dataList = json.decode(response)['results'];
+    List<GankInfo> resultList = [];
+    dataList.forEach((json) {
+      try {
+        resultList.add(GankInfo.fromJson(json));
+      } catch (e) {
+        print('GankInfo转换异常');
+      }
+    });
+    return resultList;
+  }
 }
