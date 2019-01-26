@@ -23,7 +23,7 @@ class _HoPageState extends State<HomePage> {
 
   double _appBarElevation = 4.0;
   double _historyOpacity = .0;
-  String _currentDate;
+  String _currentDate = '';
   List<String> _historyDates = [];
 
   BottomNavigationBarItem _buildTab(BottomTab tab) =>
