@@ -24,10 +24,8 @@ class HistoryDateView extends StatelessWidget {
       ? new IconButton(
           color: Colors.grey[800],
           icon: const Icon(Icons.more_horiz),
-          onPressed: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => new HistoryPage()));
-          },
+          onPressed: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => new HistoryPage())),
         )
       : new HistoryListItem(this.historyDates[index], this.currentDate,
           onTap: (date) {
