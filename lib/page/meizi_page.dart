@@ -86,12 +86,11 @@ class _MeiZiPageState extends State<MeiZiPage>
       child: new Container(
           // color: Theme.of(context).backgroundColor,
           child: new RefreshIndicator(
-        child: new ListView.builder(
-            controller: _scrollController,
-            itemCount: _gankInfos.length + 1,
-            itemBuilder: (context, index) => _renderList(index)),
-        onRefresh: _onRefresh,
-      )));
+              child: new ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _gankInfos.length + 1,
+                  itemBuilder: (context, index) => _renderList(index)),
+              onRefresh: _onRefresh)));
   @override
   bool get wantKeepAlive => true;
 }

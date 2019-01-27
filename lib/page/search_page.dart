@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../manager/search_history_manager.dart';
 import '../page/search_suggestions_page.dart';
 import '../page/search_results_page.dart';
-import '../page/gank_item_page.dart';
 
 class SearchPage extends SearchDelegate<String> {
   @override
