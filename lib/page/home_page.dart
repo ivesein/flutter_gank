@@ -111,7 +111,7 @@ class _HoPageState extends State<HomePage> {
           new IconButton(icon: const Icon(Icons.add), onPressed: () {});
     } else if (_tabIndex == TabCategory.meizi.index) {
       iconButton =
-          new IconButton(icon: const Icon(Icons.sort), onPressed: () {});
+          new IconButton(icon: const Icon(Icons.details), onPressed: () {});
     } else {
       iconButton =
           new IconButton(icon: const Icon(Icons.settings), onPressed: () {});
