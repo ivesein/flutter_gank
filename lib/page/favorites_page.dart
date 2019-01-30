@@ -57,7 +57,8 @@ class _FavoritesPageState extends State<FavoritesPage>
         _updateEmptyViewStatus();
       });
 
-      SnackBar snackBar = new SnackBar(
+      Scaffold.of(context).hideCurrentSnackBar();
+      Scaffold.of(context).showSnackBar(new SnackBar(
           content: const Text(StringValus.DELETE_SUCCESS),
           action: new SnackBarAction(
               label: StringValus.RETRACT,
@@ -68,8 +69,7 @@ class _FavoritesPageState extends State<FavoritesPage>
                     _updateEmptyViewStatus();
                   });
                 });
-              }));
-      Scaffold.of(context).showSnackBar(snackBar);
+              })));
     }
   }
 
