@@ -3,6 +3,7 @@ import '../api/api.dart';
 import '../model/today_indfo.dart';
 import '../model/history_content_info.dart';
 import '../model/gank_info.dart';
+import '../model/api_basic_result.dart';
 import 'dart:convert';
 
 class DataUtil {
@@ -88,5 +89,11 @@ class DataUtil {
       }
     });
     return resultList;
+  }
+
+  static Future<ApiBasicResult> submit(Map<dynamic, dynamic> params) async {
+    String response = await Netutil.post(Api.SUBMIT, params);
+    ApiBasicResult result = ApiBasicResult.fromJson(json.decode(response));
+    return result;
   }
 }

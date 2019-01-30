@@ -16,4 +16,7 @@ class Api {
 
   /// 查询
   static const String SEARCH = 'http://gank.io/api/search/';
+
+  /// 提交新干货
+  static const String SUBMIT = 'http://gank.io/api/add2gank';
 }
