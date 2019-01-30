@@ -53,7 +53,7 @@ class _GankItemPageState extends State<GankItemPage>
     if (this.mounted) {
       setState(() {
         _gankInfos.addAll(resultList);
-        _hasMore = resultList.length >= 20;
+        _has More = resultList.length >= 20;
 
         _emptyViewStatus = _gankInfos.isEmpty && _pageNo == 1
             ? EmptyViewStatus.noData

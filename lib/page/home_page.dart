@@ -5,6 +5,7 @@ import '../page/category_page.dart';
 import '../page/meizi_page.dart';
 import '../page/favorites_page.dart';
 import '../page/search_page.dart';
+import '../page/submit_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
@@ -46,12 +47,6 @@ class _HoPageState extends State<HomePage> {
     _pageController = new PageController();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-  }
-
   Future<void> _loadData() async {
     await DataUtil.getDateList().then((resultList) {
       setState(() {
@@ -68,9 +63,9 @@ class _HoPageState extends State<HomePage> {
           duration: new Duration(milliseconds: 300), curve: Curves.ease);
 
       // 切换到其他分类,隐藏历史日期选择控件
-      if (_historyOpacity != .0) _historyOpacity = .0;
+      if (_historyOpacity != 0.0) _historyOpacity = 0.0;
 
-      _appBarElevation = _tabIndex != TabCategory.sort.index ? 4.0 : .0;
+      _appBarElevation = _tabIndex != TabCategory.sort.index ? 4.0 : 0.0;
     });
   }
 
@@ -88,6 +83,10 @@ class _HoPageState extends State<HomePage> {
       }
     });
   }
+
+  /// 发布干货事件
+  void _postTap(BuildContext context) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => new SubmitPage()));
 
   /// 历史日期选择栏点击事件
   void _historyDateItemTap(String date) {
@@ -107,8 +106,8 @@ class _HoPageState extends State<HomePage> {
       iconButton = new IconButton(
           icon: const Icon(Icons.date_range), onPressed: _dateRangeTap);
     } else if (_tabIndex == TabCategory.sort.index) {
-      iconButton =
-          new IconButton(icon: const Icon(Icons.add), onPressed: () {});
+      iconButton = new IconButton(
+          icon: const Icon(Icons.add), onPressed: () => _postTap(context));
     } else if (_tabIndex == TabCategory.meizi.index) {
       iconButton =
           new IconButton(icon: const Icon(Icons.details), onPressed: () {});
@@ -121,6 +120,12 @@ class _HoPageState extends State<HomePage> {
 
   void _doSearch(BuildContext context) async {
     await showSearch(context: context, delegate: SearchPage());
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 
   @override
