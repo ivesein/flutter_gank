@@ -52,7 +52,7 @@ class _SubmitPageState extends State<SubmitPage> {
           margin: const EdgeInsets.all(16.0),
           child: new ListView(children: <Widget>[
             new TextFormField(
-                maxLines: 1, 
+                maxLines: 1,
                 decoration: const InputDecoration(
                     border: const OutlineInputBorder(),
                     hintText: StringValus.TEXT_FILED_URL_HINT_TEXT,
