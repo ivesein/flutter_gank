@@ -22,6 +22,7 @@ class _NewsPageState extends State<NewsPage>
   String _girlImage;
   Map<String, List<GankInfo>> _itemData = new Map();
 
+  double _lastPixels = 0.0;
   ScrollController _scrollController;
 
   @override
@@ -31,12 +32,6 @@ class _NewsPageState extends State<NewsPage>
     _registerBusEvent();
     _initController();
     _loadData();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
   }
 
   void _registerBusEvent() => BusManager.bus
@@ -96,12 +91,19 @@ class _NewsPageState extends State<NewsPage>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) => _itemData.isEmpty
       ? new Center(child: const CircularProgressIndicator())
       : new Container(
           color: Theme.of(context).backgroundColor,
           child: new RefreshIndicator(
-              child: new ListView(children: _buildItem()),
+              child: new ListView(
+                  children: _buildItem(), controller: _scrollController),
               onRefresh: _onRefresh));
 
   @override
