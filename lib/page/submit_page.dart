@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import '../values/strings.dart';
 import '../model/category_info.dart';
 import '../util/data_util.dart';
@@ -9,6 +10,7 @@ class SubmitPage extends StatefulWidget {
 }
 
 class _SubmitPageState extends State<SubmitPage> {
+  Timer _time;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
@@ -16,11 +18,6 @@ class _SubmitPageState extends State<SubmitPage> {
   String _desc = '';
   String _nickname = '';
   String _category = 'Android';
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _onSubmit(BuildContext context) async {
     var form = _formKey.currentState;
@@ -37,6 +34,11 @@ class _SubmitPageState extends State<SubmitPage> {
       await DataUtil.submit(params).then((result) {
         _scaffoldKey.currentState
             .showSnackBar(new SnackBar(content: new Text(result.msg)));
+
+        Duration duration = new Duration(milliseconds: 1500);
+        _time = new Timer(duration, () {
+          if (!result.error) Navigator.of(context).pop();
+        });
       });
     }
   }
@@ -98,6 +100,12 @@ class _SubmitPageState extends State<SubmitPage> {
                     .toList(),
                 onChanged: (value) => setState(() => this._category = value))
           ])));
+
+  @override
+  void dispose() {
+    super.dispose();
+    _time?.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
