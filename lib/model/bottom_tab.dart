@@ -8,7 +8,7 @@ class BottomTab {
 }
 
 /// Tab类别
-enum TabCategory { news, sort, meizi, collections }
+enum TabCategory { news, category, meizi, favorite }
 
 List<BottomTab> bottomTabs = [
   const BottomTab(title: const Text('最新'), icon: const Icon(Icons.fiber_new)),
