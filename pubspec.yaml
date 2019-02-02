@@ -74,8 +74,3 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
-
-  assets:
-    - images/ic_list_no_more.jpg
-    - images/ic_empty_no_data.gif
-    - images/ic_empty_no_favorite_data.gif
