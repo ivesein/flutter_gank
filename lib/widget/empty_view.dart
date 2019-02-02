@@ -23,11 +23,7 @@ class EmptyView extends StatelessWidget {
           child: new Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         new Text(this.remark,
             textAlign: TextAlign.center,
-            style:
-                const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-        new Card(
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: new Image.asset(this.image))
+            style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold))
       ]));
 
   @override
