@@ -5,7 +5,9 @@ import '../widget/placeholder_image_view.dart';
 import '../util/time_util.dart';
 import '../page/article_page.dart';
 
-class GankListItem extends StatelessWidget {
+class GankListItem extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _GankListItemState();
   final GankInfo gankInfo;
   final int currentIndex;
   final int dataCount;
@@ -19,36 +21,39 @@ class GankListItem extends StatelessWidget {
       this.dismissible = false,
       this.onDismissed})
       : super(key: key);
+}
 
-  static const double _defaultSpacing = 8.0;
+class _GankListItemState extends State<GankListItem> {
+  bool _readingRecordStatus = false;
+  final double _defaultSpacing = 8.0;
 
   /// 构建文字信息
-  Widget _buildText() => new Text(this.gankInfo.desc,
+  Widget _buildText() => new Text(widget.gankInfo.desc,
       style: new TextStyle(
           fontSize: 18.0,
-          color: Colors.blueGrey[800],
+          color: this._readingRecordStatus ? Colors.grey : Colors.blueGrey[800],
           fontWeight: FontWeight.bold));
 
   /// 构建底部布局
   Widget _buildBottom(BuildContext context) => Row(children: <Widget>[
         new IconAndText(
           Icons.person,
-          this.gankInfo.who,
+          widget.gankInfo.who,
         ),
         new SizedBox(width: _defaultSpacing),
         new IconAndText(
-            Icons.update, getTimeDuration(this.gankInfo.publishedAt))
+            Icons.update, getTimeDuration(widget.gankInfo.publishedAt))
       ]);
 
   ///构建缩略图
   Widget _buildPreView() =>
-      this.gankInfo.images == null || this.gankInfo.images.isEmpty
+      widget.gankInfo.images == null || widget.gankInfo.images.isEmpty
           ? new Container()
           : new ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(4.0)),
               child: new PlaceholderImageView(
                   // 禁止播放GIF,容易造成OOM
-                  this.gankInfo.images[0].replaceAll('large', 'thumbnail'),
+                  widget.gankInfo.images[0].replaceAll('large', 'thumbnail'),
                   width: 100.0,
                   height: 100.0),
             );
@@ -61,7 +66,7 @@ class GankListItem extends StatelessWidget {
         child: new InkWell(
             borderRadius: borderRadius,
             child: new Container(
-              padding: const EdgeInsets.all(_defaultSpacing),
+              padding: new EdgeInsets.all(_defaultSpacing),
               child: new Row(children: <Widget>[
                 new Expanded(
                   child: new Column(
@@ -81,9 +86,9 @@ class GankListItem extends StatelessWidget {
 
   /// 构建布局
   Widget _buildLayout(BuildContext context) {
-    final double topSpacing = this.currentIndex == 0 ? _defaultSpacing : .0;
+    final double topSpacing = widget.currentIndex == 0 ? _defaultSpacing : .0;
     final double bottomSpacing =
-        this.currentIndex == this.dataCount ? .0 : _defaultSpacing;
+        widget.currentIndex == widget.dataCount ? .0 : _defaultSpacing;
     return new Card(
         margin: new EdgeInsets.only(
             left: _defaultSpacing,
@@ -95,17 +100,17 @@ class GankListItem extends StatelessWidget {
 
   void _onItemTap(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => new ArticlePage(this.gankInfo)));
+        builder: (context) => new ArticlePage(widget.gankInfo)));
   }
 
   @override
   Widget build(BuildContext context) {
-    return this.dismissible
+    return widget.dismissible
         ? new Dismissible(
-            key: new Key(this.gankInfo.itemId),
+            key: new Key(widget.gankInfo.itemId),
             child: _buildLayout(context),
             onDismissed: (decoration) {
-              this.onDismissed(this.currentIndex, this.gankInfo);
+              widget.onDismissed(widget.currentIndex, widget.gankInfo);
             })
         : _buildLayout(context);
   }
