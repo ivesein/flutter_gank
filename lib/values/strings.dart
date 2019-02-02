@@ -16,4 +16,5 @@ class StringValus {
   static const String TEXT_FILED_NICKNAME_HINT_TEXT = '请输入昵称';
   static const String TEXT_FILED_NICKNAME_LABEL_TEXT = '昵称';
   static const String TEXT_FIELD_NICKNAME_EMPTY_TEXT = '昵称不能为空';
+  static const String SETTINGS_PAGE_NAME = '设置';
 }
