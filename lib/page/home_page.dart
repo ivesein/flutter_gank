@@ -6,6 +6,7 @@ import '../page/meizi_page.dart';
 import '../page/favorites_page.dart';
 import '../page/search_page.dart';
 import '../page/submit_page.dart';
+import '../page/settings_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
@@ -65,12 +66,12 @@ class _HoPageState extends State<HomePage> {
       // 切换到其他分类,隐藏历史日期选择控件
       if (_historyOpacity != 0.0) _historyOpacity = 0.0;
 
-      _appBarElevation = _tabIndex != TabCategory.sort.index ? 4.0 : 0.0;
+      _appBarElevation = _tabIndex != TabCategory.category.index ? 4.0 : 0.0;
     });
   }
 
-  /// 日期选择事件
-  void _dateRangeTap() {
+  /// 日期选择
+  void _onDateRangeTap() {
     setState(() {
       if (_historyOpacity == .0) {
         // 取消AppBar底部阴影
@@ -84,11 +85,11 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
-  /// 发布干货事件
-  void _postTap(BuildContext context) => Navigator.of(context)
+  /// 打开[发布干货]页
+  void _onSubmitTap(BuildContext context) => Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => new SubmitPage()));
 
-  /// 历史日期选择栏点击事件
+  /// 历史日期选择栏点击
   void _historyDateItemTap(String date) {
     setState(() {
       if (_currentDate != date) {
@@ -100,23 +101,28 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
+  /// 打开[设置页]
+  void _onSettingsTap(BuildContext context) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => new SettingsPage()));
+
   Widget _buildLeading() {
     IconButton iconButton;
     if (_tabIndex == TabCategory.news.index) {
       iconButton = new IconButton(
-          icon: const Icon(Icons.date_range), onPressed: _dateRangeTap);
-    } else if (_tabIndex == TabCategory.sort.index) {
-      iconButton = new IconButton(
-          icon: const Icon(Icons.add), onPressed: () => _postTap(context));
-    } else if (_tabIndex == TabCategory.meizi.index) {
-      iconButton =
-          new IconButton(icon: const Icon(Icons.details), onPressed: () {});
+          icon: const Icon(Icons.date_range), onPressed: _onDateRangeTap);
     } else {
-      iconButton =
-          new IconButton(icon: const Icon(Icons.settings), onPressed: () {});
+      iconButton = null;
     }
     return iconButton;
   }
+
+  List<Widget> _buildActions() => [
+        new IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => _onSubmitTap(context)),
+        new IconButton(
+            icon: const Icon(Icons.search), onPressed: () => _doSearch(context))
+      ];
 
   void _doSearch(BuildContext context) async {
     await showSearch(context: context, delegate: SearchPage());
@@ -136,11 +142,7 @@ class _HoPageState extends State<HomePage> {
             ? _currentDate
             : StringValus.APP_NAME),
         leading: _buildLeading(),
-        actions: <Widget>[
-          new IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => _doSearch(context))
-        ],
+        actions: _buildActions(),
         elevation: _appBarElevation);
 
     // 历史日期选择栏
