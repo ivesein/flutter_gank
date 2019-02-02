@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './preferences_manager.dart';
 
 class SearchHistoryManager {
-  static const String SEARCH_HISTORY_LIST = 'search_history_list';
+  static const String KEY_SEARCH_HISTORYS = 'key_search_historys';
 
   static add(String history) async {
     if (history.isNotEmpty) {
@@ -16,12 +16,12 @@ class SearchHistoryManager {
       historys.insert(index, history);
 
       // 保存记录
-      await preferences.setStringList(SEARCH_HISTORY_LIST, historys);
+      await preferences.setStringList(KEY_SEARCH_HISTORYS, historys);
     }
   }
 
   static Future<List<String>> findAll() async {
     SharedPreferences preferences = await PreferencesManager.getInstance();
-    return preferences.getStringList(SEARCH_HISTORY_LIST) ?? [];
+    return preferences.getStringList(KEY_SEARCH_HISTORYS) ?? [];
   }
 }
