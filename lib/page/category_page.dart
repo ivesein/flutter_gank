@@ -34,6 +34,7 @@ class _CategoryPageState extends State<CategoryPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final Widget tabBar = new Material(
         elevation: 4.0,
         child: new TabBar(

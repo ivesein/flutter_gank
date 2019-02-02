@@ -81,16 +81,20 @@ class _MeiZiPageState extends State<MeiZiPage>
   }
 
   @override
-  Widget build(BuildContext context) => new EmptyView(
-      status: _emptyViewStatus,
-      child: new Container(
-          // color: Theme.of(context).backgroundColor,
-          child: new RefreshIndicator(
-              child: new ListView.builder(
-                  controller: _scrollController,
-                  itemCount: _gankInfos.length + 1,
-                  itemBuilder: (context, index) => _renderList(index)),
-              onRefresh: _onRefresh)));
+  Widget build(BuildContext context) {
+    super.build(context);
+    return new EmptyView(
+        status: _emptyViewStatus,
+        child: new Container(
+            // color: Theme.of(context).backgroundColor,
+            child: new RefreshIndicator(
+                child: new ListView.builder(
+                    controller: _scrollController,
+                    itemCount: _gankInfos.length + 1,
+                    itemBuilder: (context, index) => _renderList(index)),
+                onRefresh: _onRefresh)));
+  }
+
   @override
   bool get wantKeepAlive => true;
 }

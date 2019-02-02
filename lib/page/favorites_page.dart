@@ -81,6 +81,7 @@ class _FavoritesPageState extends State<FavoritesPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return new EmptyView(
         status: _emptyViewStatus,
         image: ImageValues.EMPTY_VIEW_NO_FAVORITE_IMAGE,

@@ -90,6 +90,7 @@ class _GankItemPageState extends State<GankItemPage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return new EmptyView(
       status: _emptyViewStatus,
       child: new Container(
