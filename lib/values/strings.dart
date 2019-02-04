@@ -17,4 +17,8 @@ class StringValus {
   static const String TEXT_FILED_NICKNAME_LABEL_TEXT = '昵称';
   static const String TEXT_FIELD_NICKNAME_EMPTY_TEXT = '昵称不能为空';
   static const String SETTINGS_PAGE_NAME = '设置';
+  static const String TEXT_FILED_ACCOUNT_LABEL_TEXT = 'GitHub账号';
+  static const String TEXT_FIELD_ACCOUNT_EMPTY_TEXT = '账号不能为空';
+  static const String TEXT_FILED_PASSWORD_LABEL_TEXT = '密码';
+  static const String TEXT_FIELD_PASSWORD_EMPTY_TEXT = '密码不能为空';
 }
