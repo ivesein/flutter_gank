@@ -21,4 +21,5 @@ class StringValus {
   static const String TEXT_FIELD_ACCOUNT_EMPTY_TEXT = '账号不能为空';
   static const String TEXT_FILED_PASSWORD_LABEL_TEXT = '密码';
   static const String TEXT_FIELD_PASSWORD_EMPTY_TEXT = '密码不能为空';
+  static const String LOGIN_FAILED = '登录失败,请重试';
 }
