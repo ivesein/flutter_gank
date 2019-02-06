@@ -4,6 +4,8 @@ import '../model/today_indfo.dart';
 import '../model/history_content_info.dart';
 import '../model/gank_info.dart';
 import '../model/api_basic_result.dart';
+import '../model/user_info.dart';
+import '../constant/config.dart';
 import 'dart:convert';
 
 class DataUtil {
@@ -91,9 +93,46 @@ class DataUtil {
     return resultList;
   }
 
+  /// 提交干货
   static Future<ApiBasicResult> submit(Map<dynamic, dynamic> params) async {
     String response = await Netutil.post(Api.SUBMIT, params);
     ApiBasicResult result = ApiBasicResult.fromJson(json.decode(response));
     return result;
+  }
+
+  /// 登录,获取Token
+  /// [account] 账号
+  /// [passWord] 密码
+  static Future<UserInfo> login(String account, String passWord) async {
+    Map<String, dynamic> tokenParams = {
+      'client_id': Config.CLIENT_ID,
+      'client_secret': Config.CLIENT_SECRET,
+      'note': Config.NOTE,
+      'noteUrl': Config.NOTE_URL,
+      'scopes': Config.GANK_OAUTH2_SCOPE
+    };
+    Map<String, String> headers = {
+      'Authorization':
+          'Basic ${base64Encode(utf8.encode('$account:$passWord'))}',
+      'cache-control': 'no-cache'
+    };
+    String response = await Netutil.post(
+        Api.AUTHORIZE, json.encode(tokenParams),
+        headers: headers);
+    String token = json.decode(response)['token'];
+
+    if (token == null) {
+      return null;
+    }
+    Map<String, dynamic> userInfoParams = {'access_token': token};
+    UserInfo info = await getUserInfo(userInfoParams);
+    return info;
+  }
+
+  /// 获取用户信息
+  static Future<UserInfo> getUserInfo(Map<String, dynamic> params) async {
+    String response = await Netutil.get(Api.USER_INFO, params: params);
+    UserInfo info = UserInfo.fromJson(json.decode(response));
+    return info;
   }
 }

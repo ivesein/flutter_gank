@@ -19,4 +19,10 @@ class Api {
 
   /// 提交新干货
   static const String SUBMIT = 'http://gank.io/api/add2gank';
+
+  /// GitHub授权
+  static const String AUTHORIZE = 'https://api.github.com/authorizations';
+
+  /// 获取GitHub用户信息
+  static const String USER_INFO = 'https://api.github.com/user';
 }

@@ -20,8 +20,10 @@ class Netutil {
 
   /// POSt请求
   /// [params] 参数
-  static Future<String> post(String url, Map<dynamic, dynamic> params) async {
-    http.Response _response = await http.post(url, body: params);
+  static Future<String> post(String url, dynamic params,
+      {Map<String, String> headers}) async {
+    http.Response _response =
+        await http.post(url, body: params, headers: headers);
     return _response.body;
   }
 }
