@@ -17,7 +17,6 @@ class ArticlePage extends StatefulWidget {
 class _ArticlePageState extends State<ArticlePage> {
   bool _favoriteStatus = false;
   Completer<WebViewController> _webViewController;
-
   GlobalKey<ScaffoldState> _scffoldKey = new GlobalKey();
 
   @override
@@ -32,7 +31,9 @@ class _ArticlePageState extends State<ArticlePage> {
   }
 
   void _initData() async {
-    Map<String, dynamic> query = {'itemId': widget.gankInfo.itemId};
+    String dataId = widget.gankInfo.itemId;
+    // 获取收藏状态
+    Map<String, dynamic> query = {'itemId': dataId};
     await FavoriteManager.find(query).then((resultList) {
       setState(() => _favoriteStatus = resultList.isEmpty ? false : true);
     });
