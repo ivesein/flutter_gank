@@ -24,7 +24,7 @@ class _SubmitPageState extends State<SubmitPage> {
     if (form.validate()) {
       form.save();
 
-      Map<dynamic, dynamic> params = {
+      Map<String, String> params = {
         'url': _url,
         'desc': _desc,
         'who': _nickname,
