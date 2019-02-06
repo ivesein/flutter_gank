@@ -6,13 +6,18 @@ import '../page/meizi_page.dart';
 import '../page/favorites_page.dart';
 import '../page/search_page.dart';
 import '../page/submit_page.dart';
+import '../page/login_page.dart';
 import '../page/settings_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
+import '../manager/user_manager.dart';
 import '../event/update_news_date_event.dart';
+import '../event/update_user_info_event.dart';
 import '../manager/favorite_manager.dart';
 import '../values/strings.dart';
+import '../model/user_info.dart';
+import '../widget/placeholder_image_view.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -28,6 +33,8 @@ class _HoPageState extends State<HomePage> {
   String _currentDate = '';
   List<String> _historyDates = [];
 
+  UserInfo _userInfo;
+
   BottomNavigationBarItem _buildTab(BottomTab tab) =>
       new BottomNavigationBarItem(title: tab.title, icon: tab.icon);
 
@@ -35,6 +42,8 @@ class _HoPageState extends State<HomePage> {
   void initState() {
     super.initState();
     _initApp();
+    _initData();
+    _registerBusEvent();
     _initController();
     _loadData();
   }
@@ -43,6 +52,16 @@ class _HoPageState extends State<HomePage> {
     // 收藏数据库
     await FavoriteManager.init();
   }
+
+  void _initData() async {
+    _userInfo = await UserManager.getUserInfo();
+  }
+
+  void _registerBusEvent() => BusManager.bus
+          .on<UpdateUserInfoEvent>()
+          .listen((UpdateUserInfoEvent event) {
+        setState(() => this._userInfo = event.userInfo);
+      });
 
   void _initController() {
     _pageController = new PageController();
@@ -85,10 +104,6 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
-  /// 打开[发布干货]页
-  void _onSubmitTap(BuildContext context) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => new SubmitPage()));
-
   /// 历史日期选择栏点击
   void _historyDateItemTap(String date) {
     setState(() {
@@ -100,10 +115,6 @@ class _HoPageState extends State<HomePage> {
       }
     });
   }
-
-  /// 打开[设置页]
-  void _onSettingsTap(BuildContext context) => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => new SettingsPage()));
 
   Widget _buildLeading() {
     IconButton iconButton;
@@ -117,15 +128,42 @@ class _HoPageState extends State<HomePage> {
   }
 
   List<Widget> _buildActions() => [
+        // 添加
         new IconButton(
             icon: const Icon(Icons.add),
             onPressed: () => _onSubmitTap(context)),
+        // 搜索
         new IconButton(
-            icon: const Icon(Icons.search), onPressed: () => _doSearch(context))
+            icon: const Icon(Icons.search),
+            onPressed: () => _onSearch(context)),
+        // 头像
+        new IconButton(
+            icon: this._userInfo == null
+                ? const Icon(Icons.account_circle)
+                : new CircleAvatar(
+                    radius: 12.0,
+                    child: new ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(50.0)),
+                        child:
+                            new PlaceholderImageView(this._userInfo.avatarUl))),
+            onPressed: () => _onAccountTap(context))
       ];
 
-  void _doSearch(BuildContext context) async {
+  /// 打开[发布干货页]
+  void _onSubmitTap(BuildContext context) => Navigator.of(context)
+      .push(MaterialPageRoute(builder: (context) => new SubmitPage()));
+
+  /// 打开[搜索页]
+  void _onSearch(BuildContext context) async {
     await showSearch(context: context, delegate: SearchPage());
+  }
+
+  void _onAccountTap(BuildContext context) async {
+    // 判断是否登陆
+    Widget page =
+        await UserManager.isLogin() ? new SettingsPage() : new LoginPage();
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
   }
 
   @override
