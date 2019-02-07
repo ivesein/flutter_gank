@@ -20,6 +20,9 @@ class _SubmitPageState extends State<SubmitPage> {
   String _category = 'Android';
 
   void _onSubmit(BuildContext context) async {
+    // 关闭键盘
+    FocusScope.of(context).requestFocus(new FocusNode());
+
     var form = _formKey.currentState;
     if (form.validate()) {
       form.save();
