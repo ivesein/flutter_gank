@@ -22,4 +22,8 @@ class StringValus {
   static const String TEXT_FILED_PASSWORD_LABEL_TEXT = '密码';
   static const String TEXT_FIELD_PASSWORD_EMPTY_TEXT = '密码不能为空';
   static const String LOGIN_FAILED = '登录失败,请重试';
+  static const String DIALOG_ACTION_CANCEL = '取消';
+  static const String DIALOG_ACTION_CONFIRM = '确认';
+  static const String LOGINOUT_DIALOG_CONTENT = '确认退出登录?';
+  static const String LOGINOUT_SUCCESS = '退出登录成功';
 }
