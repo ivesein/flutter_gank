@@ -7,7 +7,6 @@ import '../page/favorites_page.dart';
 import '../page/search_page.dart';
 import '../page/submit_page.dart';
 import '../page/login_page.dart';
-import '../page/settings_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
@@ -25,6 +24,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HoPageState extends State<HomePage> {
+  GlobalKey<ScaffoldState> _scfooldKey = new GlobalKey();
+
   int _tabIndex = 0;
   PageController _pageController;
 
@@ -34,9 +35,6 @@ class _HoPageState extends State<HomePage> {
   List<String> _historyDates = [];
 
   UserInfo _userInfo;
-
-  BottomNavigationBarItem _buildTab(BottomTab tab) =>
-      new BottomNavigationBarItem(title: tab.title, icon: tab.icon);
 
   @override
   void initState() {
@@ -116,6 +114,9 @@ class _HoPageState extends State<HomePage> {
     });
   }
 
+  BottomNavigationBarItem _buildTab(BottomTab tab) =>
+      new BottomNavigationBarItem(title: tab.title, icon: tab.icon);
+
   Widget _buildLeading() {
     IconButton iconButton;
     if (_tabIndex == TabCategory.news.index) {
@@ -160,10 +161,40 @@ class _HoPageState extends State<HomePage> {
   }
 
   void _onAccountTap(BuildContext context) async {
-    // 判断是否登陆
-    Widget page =
-        await UserManager.isLogin() ? new SettingsPage() : new LoginPage();
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => page));
+    await UserManager.isLogin()
+        ? _showLogoutDialog(context)
+        : Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => new LoginPage()));
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return new AlertDialog(
+              content: const Text(StringValus.LOGINOUT_DIALOG_CONTENT),
+              actions: <Widget>[
+                new FlatButton(
+                    child: const Text(StringValus.DIALOG_ACTION_CANCEL),
+                    onPressed: () => Navigator.of(context).pop()),
+                new FlatButton(
+                    child: const Text(StringValus.DIALOG_ACTION_CONFIRM),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pop(StringValus.DIALOG_ACTION_CONFIRM);
+                    })
+              ]);
+        }).then((value) async {
+      if (value == StringValus.DIALOG_ACTION_CONFIRM) {
+        await UserManager.removeFromLocal();
+        setState(() => _userInfo = null);
+
+        _scfooldKey.currentState.showSnackBar(new SnackBar(
+          content: const Text(StringValus.LOGINOUT_SUCCESS),
+          duration: const Duration(milliseconds: 1000),
+        ));
+      }
+    });
   }
 
   @override
@@ -212,6 +243,9 @@ class _HoPageState extends State<HomePage> {
         onTap: _selectedTab);
 
     return new Scaffold(
-        appBar: appBar, body: body, bottomNavigationBar: bottomTabBar);
+        key: _scfooldKey,
+        appBar: appBar,
+        body: body,
+        bottomNavigationBar: bottomTabBar);
   }
 }
