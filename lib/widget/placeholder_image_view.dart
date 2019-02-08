@@ -14,7 +14,7 @@ class PlaceholderImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) => new Stack(children: <Widget>[
         new Container(
-            color: const Color(IMAGE_PLACHEHOLDER_COLOR),
+            color: const Color(ColorValues.IMAGE_PLACHEHOLDER_COLOR),
             width: width,
             height: height),
         new FadeInImage.memoryNetwork(

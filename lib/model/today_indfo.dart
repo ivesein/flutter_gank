@@ -14,7 +14,7 @@ class TodayInfo {
     Map<String, List<GankInfo>> itemData = {};
     String girlImage = '';
     results.forEach((key, value) {
-      if (key == CATEGORY_WELFARE) {
+      if (key == StringValues.CATEGORY_WELFARE) {
         girlImage = value[0]['url'];
       } else {
         itemData[key] = (value as List<dynamic>)

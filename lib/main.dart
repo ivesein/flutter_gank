@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import './page/home_page.dart';
-import './values/strings.dart';
+import './constant/strings.dart';
 
 void main() => runApp(MyApp());
 
@@ -8,7 +8,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: StringValus.APP_NAME,
+      title: StringValues.APP_NAME,
       theme: ThemeData(
           primaryColor: Colors.blueGrey,
           primarySwatch: Colors.blue,

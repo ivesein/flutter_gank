@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import '../values/strings.dart';
-import '../values/images.dart';
+import '../constant/strings.dart';
 import '../model/empty_view_status.dart';
 
 class EmptyView extends StatelessWidget {
@@ -12,8 +11,8 @@ class EmptyView extends StatelessWidget {
       {Key key,
       @required this.child,
       @required this.status,
-      this.image = ImageValues.EMPTY_VIEW_NO_DATA_IMAGE,
-      this.remark = StringValus.EMPTY_NO_DATA_REMARK})
+      this.image,
+      this.remark = StringValues.EMPTY_NO_DATA_REMARK})
       : super(key: key);
 
   Widget _buildLoadingView() =>

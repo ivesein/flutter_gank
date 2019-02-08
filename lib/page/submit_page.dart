@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import '../values/strings.dart';
+import '../constant/strings.dart';
 import '../model/category_info.dart';
 import '../util/data_util.dart';
 
@@ -60,23 +60,23 @@ class _SubmitPageState extends State<SubmitPage> {
                 maxLines: 1,
                 decoration: const InputDecoration(
                     border: const OutlineInputBorder(),
-                    hintText: StringValus.TEXT_FILED_URL_HINT_TEXT,
-                    labelText: StringValus.TEXT_FILED_URL_LABEL_TEXT),
+                    hintText: StringValues.TEXT_FILED_URL_HINT_TEXT,
+                    labelText: StringValues.TEXT_FILED_URL_LABEL_TEXT),
                 keyboardType: TextInputType.url,
                 textInputAction: TextInputAction.next,
                 validator: (value) => value.isEmpty
-                    ? StringValus.TEXT_FIELD_URL_EMPTY_TEXT
+                    ? StringValues.TEXT_FIELD_URL_EMPTY_TEXT
                     : null,
                 onSaved: (value) => this._url = value),
             _buildDivider(),
             new TextFormField(
                 decoration: const InputDecoration(
                     border: const OutlineInputBorder(),
-                    hintText: StringValus.TEXT_FILED_DESC_HINT_TEXT,
-                    labelText: StringValus.TEXT_FILED_DESC_LABEL_TEXT),
+                    hintText: StringValues.TEXT_FILED_DESC_HINT_TEXT,
+                    labelText: StringValues.TEXT_FILED_DESC_LABEL_TEXT),
                 textInputAction: TextInputAction.next,
                 validator: (value) => value.isEmpty
-                    ? StringValus.TEXT_FIELD_DESC_EMPTY_TEXT
+                    ? StringValues.TEXT_FIELD_DESC_EMPTY_TEXT
                     : null,
                 onSaved: (value) => this._desc = value),
             _buildDivider(),
@@ -85,11 +85,11 @@ class _SubmitPageState extends State<SubmitPage> {
                 maxLines: 1,
                 decoration: const InputDecoration(
                     border: const OutlineInputBorder(),
-                    hintText: StringValus.TEXT_FILED_NICKNAME_HINT_TEXT,
-                    labelText: StringValus.TEXT_FILED_NICKNAME_LABEL_TEXT),
+                    hintText: StringValues.TEXT_FILED_NICKNAME_HINT_TEXT,
+                    labelText: StringValues.TEXT_FILED_NICKNAME_LABEL_TEXT),
                 textInputAction: TextInputAction.next,
                 validator: (value) => value.isEmpty
-                    ? StringValus.TEXT_FIELD_NICKNAME_EMPTY_TEXT
+                    ? StringValues.TEXT_FIELD_NICKNAME_EMPTY_TEXT
                     : null,
                 onSaved: (value) => this._nickname = value),
             _buildDivider(),
@@ -113,7 +113,7 @@ class _SubmitPageState extends State<SubmitPage> {
   @override
   Widget build(BuildContext context) {
     final Widget appBar = new AppBar(
-        leading: const BackButton(), title: const Text(StringValus.POST_GANK));
+        leading: const BackButton(), title: const Text(StringValues.POST_GANK));
 
     final Widget body = _buildBody();
 

@@ -5,7 +5,7 @@ import '../model/gank_info.dart';
 import '../manager/favorite_manager.dart';
 import '../manager/bus_manager.dart';
 import '../event/update_favorites_event.dart';
-import '../values/strings.dart';
+import '../constant/strings.dart';
 
 class ArticlePage extends StatefulWidget {
   final GankInfo gankInfo;
@@ -58,8 +58,8 @@ class _ArticlePageState extends State<ArticlePage> {
     _scffoldKey.currentState.hideCurrentSnackBar();
     _scffoldKey.currentState.showSnackBar(new SnackBar(
         content: new Text(_favoriteStatus
-            ? StringValus.FAVORITE_ARTICLE_SUCCESS
-            : StringValus.CANCEL_FAVORITE_ARTICLE_SUCCESS)));
+            ? StringValues.FAVORITE_ARTICLE_SUCCESS
+            : StringValues.CANCEL_FAVORITE_ARTICLE_SUCCESS)));
 
     BusManager.bus.fire(new UpdateFavoritesEvent(widget.gankInfo));
   }

@@ -6,8 +6,7 @@ import '../widget/gank_list_item.dart';
 import '../widget/empty_view.dart';
 import '../manager/bus_manager.dart';
 import '../event/update_favorites_event.dart';
-import '../values/strings.dart';
-import '../values/images.dart';
+import '../constant/strings.dart';
 
 class FavoritesPage extends StatefulWidget {
   @override
@@ -59,9 +58,9 @@ class _FavoritesPageState extends State<FavoritesPage>
 
       Scaffold.of(context).hideCurrentSnackBar();
       Scaffold.of(context).showSnackBar(new SnackBar(
-          content: const Text(StringValus.DELETE_SUCCESS),
+          content: const Text(StringValues.DELETE_SUCCESS),
           action: new SnackBarAction(
-              label: StringValus.RETRACT,
+              label: StringValues.RETRACT,
               onPressed: () async {
                 await FavoriteManager.insert(currentGankInfo).then((objectId) {
                   setState(() {
@@ -84,8 +83,8 @@ class _FavoritesPageState extends State<FavoritesPage>
     super.build(context);
     return new EmptyView(
         status: _emptyViewStatus,
-        image: ImageValues.EMPTY_VIEW_NO_FAVORITE_IMAGE,
-        remark: StringValus.EMPTY_NO_FAVORITE_DATA_REMARK,
+        // image: ImageValues.EMPTY_VIEW_NO_FAVORITE_IMAGE,
+        remark: StringValues.EMPTY_NO_FAVORITE_DATA_REMARK,
         child: new Container(
             color: Theme.of(context).backgroundColor,
             child: new ListView.builder(

@@ -7,6 +7,7 @@ import '../page/favorites_page.dart';
 import '../page/search_page.dart';
 import '../page/submit_page.dart';
 import '../page/login_page.dart';
+import '../page/info_page.dart';
 import '../util/data_util.dart';
 import '../widget/history_date_view.dart';
 import '../manager/bus_manager.dart';
@@ -14,7 +15,7 @@ import '../manager/user_manager.dart';
 import '../event/update_news_date_event.dart';
 import '../event/update_user_info_event.dart';
 import '../manager/favorite_manager.dart';
-import '../values/strings.dart';
+import '../constant/strings.dart';
 import '../model/user_info.dart';
 import '../widget/placeholder_image_view.dart';
 
@@ -24,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HoPageState extends State<HomePage> {
-  GlobalKey<ScaffoldState> _scfooldKey = new GlobalKey();
+  GlobalKey<ScaffoldState> _scffoldKey = new GlobalKey();
 
   int _tabIndex = 0;
   PageController _pageController;
@@ -162,9 +163,15 @@ class _HoPageState extends State<HomePage> {
 
   void _onAccountTap(BuildContext context) async {
     await UserManager.isLogin()
-        ? _showLogoutDialog(context)
+        ? _showBottomsheet(context)
         : Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => new LoginPage()));
+  }
+
+  void _showBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => new InfoPage(userInfo: this._userInfo));
   }
 
   void _showLogoutDialog(BuildContext context) {
@@ -172,25 +179,25 @@ class _HoPageState extends State<HomePage> {
         context: context,
         builder: (context) {
           return new AlertDialog(
-              content: const Text(StringValus.LOGINOUT_DIALOG_CONTENT),
+              content: const Text(StringValues.LOGINOUT_DIALOG_CONTENT),
               actions: <Widget>[
                 new FlatButton(
-                    child: const Text(StringValus.DIALOG_ACTION_CANCEL),
+                    child: const Text(StringValues.DIALOG_ACTION_CANCEL),
                     onPressed: () => Navigator.of(context).pop()),
                 new FlatButton(
-                    child: const Text(StringValus.DIALOG_ACTION_CONFIRM),
+                    child: const Text(StringValues.DIALOG_ACTION_CONFIRM),
                     onPressed: () {
                       Navigator.of(context)
-                          .pop(StringValus.DIALOG_ACTION_CONFIRM);
+                          .pop(StringValues.DIALOG_ACTION_CONFIRM);
                     })
               ]);
         }).then((value) async {
-      if (value == StringValus.DIALOG_ACTION_CONFIRM) {
+      if (value == StringValues.DIALOG_ACTION_CONFIRM) {
         await UserManager.removeFromLocal();
         setState(() => _userInfo = null);
 
-        _scfooldKey.currentState.showSnackBar(new SnackBar(
-          content: const Text(StringValus.LOGINOUT_SUCCESS),
+        _scffoldKey.currentState.showSnackBar(new SnackBar(
+          content: const Text(StringValues.LOGINOUT_SUCCESS),
           duration: const Duration(milliseconds: 1000),
         ));
       }
@@ -209,7 +216,7 @@ class _HoPageState extends State<HomePage> {
     final Widget appBar = new AppBar(
         title: new Text(_tabIndex == TabCategory.news.index
             ? _currentDate
-            : StringValus.APP_NAME),
+            : StringValues.APP_NAME),
         leading: _buildLeading(),
         actions: _buildActions(),
         elevation: _appBarElevation);
@@ -243,7 +250,7 @@ class _HoPageState extends State<HomePage> {
         onTap: _selectedTab);
 
     return new Scaffold(
-        key: _scfooldKey,
+        key: _scffoldKey,
         appBar: appBar,
         body: body,
         bottomNavigationBar: bottomTabBar);

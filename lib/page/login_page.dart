@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../values/strings.dart';
+import '../constant/strings.dart';
 import '../util/data_util.dart';
 import '../model/user_info.dart';
 import '../manager/user_manager.dart';
@@ -48,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         // 显示错误提示
         _scaffoldKey.currentState.showSnackBar(
-            new SnackBar(content: const Text(StringValus.LOGIN_FAILED)));
+            new SnackBar(content: const Text(StringValues.LOGIN_FAILED)));
       }
     }
   }
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(32.0),
         child: new Column(children: <Widget>[
           // 标题
-          const Text(StringValus.APP_NAME,
+          const Text(StringValues.APP_NAME,
               style:
                   const TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold)),
 
@@ -92,9 +92,9 @@ class _LoginPageState extends State<LoginPage> {
                   autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
-                      labelText: StringValus.TEXT_FILED_ACCOUNT_LABEL_TEXT),
+                      labelText: StringValues.TEXT_FILED_ACCOUNT_LABEL_TEXT),
                   validator: (value) => value.isEmpty
-                      ? StringValus.TEXT_FIELD_ACCOUNT_EMPTY_TEXT
+                      ? StringValues.TEXT_FIELD_ACCOUNT_EMPTY_TEXT
                       : null,
                   onSaved: (value) => this._account = value),
 
@@ -105,9 +105,9 @@ class _LoginPageState extends State<LoginPage> {
                   maxLines: 1,
                   obscureText: true,
                   decoration: const InputDecoration(
-                      labelText: StringValus.TEXT_FILED_PASSWORD_LABEL_TEXT),
+                      labelText: StringValues.TEXT_FILED_PASSWORD_LABEL_TEXT),
                   validator: (value) => value.isEmpty
-                      ? StringValus.TEXT_FIELD_PASSWORD_EMPTY_TEXT
+                      ? StringValues.TEXT_FIELD_PASSWORD_EMPTY_TEXT
                       : null,
                   onSaved: (value) => this._passWord = value)
             ]),
