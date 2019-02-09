@@ -1,9 +1,8 @@
 class StringValues {
-  /// App分类
-  static const String CATEGORY_APP = 'APP';
-
-  /// 前端分类
   static const String APP_NAME = 'Gank.Io';
+  static const String APP_INFO = 'Flutter实现的Gank.Io客户端';
+
+  static const String CATEGORY_APP = 'APP';
   static const String CATEGORY_FRONT_END = '前端';
   static const String CATEGORY_ANDROID = 'Android';
   static const String CATEGORY_EXPAND_RESOURCES = '拓展资源';
@@ -35,6 +34,7 @@ class StringValues {
   static const String LOGIN_FAILED = '登录失败,请重试';
   static const String DIALOG_ACTION_CANCEL = '取消';
   static const String DIALOG_ACTION_CONFIRM = '确认';
+  static const String LOGINOUT = '退出';
   static const String LOGINOUT_DIALOG_CONTENT = '确认退出登录?';
   static const String LOGINOUT_SUCCESS = '退出登录成功';
 }
