@@ -10,7 +10,7 @@ class InfoPage extends StatelessWidget {
 
   Widget _buildBody() => new Container(
       height: 100.0,
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 16.0),
       child:
           new UserInfoView(this.userInfo, onLoginoutTap: this.onLoginoutTap));
 
