@@ -168,12 +168,6 @@ class _HoPageState extends State<HomePage> {
             .push(MaterialPageRoute(builder: (context) => new LoginPage()));
   }
 
-  void _showBottomsheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) => new InfoPage(userInfo: this._userInfo));
-  }
-
   void _showLogoutDialog(BuildContext context) {
     showDialog(
         context: context,
@@ -202,6 +196,14 @@ class _HoPageState extends State<HomePage> {
         ));
       }
     });
+  }
+
+  void _showBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) => new InfoPage(
+            userInfo: this._userInfo,
+            onLoginoutTap: () => _showLogoutDialog(context)));
   }
 
   @override
