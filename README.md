@@ -24,7 +24,7 @@
 
 |                           日期选择                           |                           文章详情                           |                           干货搜索                           |                           提交干货                           |                           用户信息                           |
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_news_picker_date.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_article.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_search.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_submit.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_user_info.png) |
+| ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_picker_date.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_article.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_search.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_submit.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/ios/ios_user_info.png) |
 
 
 
