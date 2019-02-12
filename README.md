@@ -7,8 +7,8 @@
 <p align="center">
   <img src="https://img.shields.io/badge/flutter sdk-1.0.0-red.svg">
   <img src="https://img.shields.io/badge/language-dart2-blue.svg">
-  <img src="https://img.shields.io/badge/license-MIT-orange.svg">
 </p>
+
 
 
 
