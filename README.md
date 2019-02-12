@@ -11,22 +11,6 @@
 </p>
 
 
-# 功能
-
-#### 💁🏻 浏览干货
-
-#### 💁🏻 收藏干货
-
-#### 💁🏻 查询干货
-
-#### 💁🏻 提交干货
-
-#### 💁🏻 登录GitHub
-
-#### 💁🏻 ｡:.ﾟヽ(｡◕‿◕｡)ﾉﾟ.:｡+ﾟ
-
-
-
 
 # 应用截图
 
@@ -57,4 +41,18 @@
 | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/android/android_picker_date.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/android/android_article.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/android/android_search.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/android/android_submit.png) | ![avator](https://raw.githubusercontent.com/dingputongxi/flutter_gank/master/screenshot/android/android_user_info.png) |
 
 
+
+# 功能
+
+#### 💁🏻 浏览干货
+
+#### 💁🏻 收藏干货
+
+#### 💁🏻 查询干货
+
+#### 💁🏻 提交干货
+
+#### 💁🏻 登录GitHub
+
+#### 💁🏻 ｡:.ﾟヽ(｡◕‿◕｡)ﾉﾟ.:｡+ﾟ
 
